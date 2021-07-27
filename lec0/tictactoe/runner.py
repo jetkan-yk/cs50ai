@@ -68,8 +68,7 @@ while True:
 
         # Draw game board
         tile_size = 80
-        tile_origin = (width / 2 - (1.5 * tile_size),
-                       height / 2 - (1.5 * tile_size))
+        tile_origin = (width / 2 - (1.5 * tile_size), height / 2 - (1.5 * tile_size))
         tiles = []
         for i in range(3):
             row = []
@@ -77,7 +76,8 @@ while True:
                 rect = pygame.Rect(
                     tile_origin[0] + j * tile_size,
                     tile_origin[1] + i * tile_size,
-                    tile_size, tile_size
+                    tile_size,
+                    tile_size,
                 )
                 pygame.draw.rect(screen, white, rect, 3)
 
@@ -124,7 +124,7 @@ while True:
             mouse = pygame.mouse.get_pos()
             for i in range(3):
                 for j in range(3):
-                    if (board[i][j] == ttt.EMPTY and tiles[i][j].collidepoint(mouse)):
+                    if board[i][j] == ttt.EMPTY and tiles[i][j].collidepoint(mouse):
                         board = ttt.result(board, (i, j))
 
         if game_over:
