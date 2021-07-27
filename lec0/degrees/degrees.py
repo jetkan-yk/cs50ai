@@ -92,13 +92,18 @@ def shortest_path(source, target):
     If no possible path, returns None.
     """
 
-    # Initialize frontier to just the starting position
-    start = Node(state=source, parent=None, action=None)
+    # Initialize frontier, explored and queued set
+    # queued set tracks nodes currently in the frontier more efficiently
+    # than the provided list search function
     frontier = QueueFrontier()
-    frontier.add(start)
-
-    # Initialize an empty explored set
     explored = set()
+    queued = set()
+
+    # Initialize starting node and add it to frontier
+    # state := people_id, action := movie_id
+    start = Node(state=source, parent=None, action=None)
+    frontier.add(start)
+    queued.add(start.state)
 
     # Keep looping until solution found
     while True:
@@ -109,17 +114,18 @@ def shortest_path(source, target):
 
         # Choose a node from the frontier
         node = frontier.remove()
+        queued.remove(node.state)
 
         # Mark node as explored
         explored.add(node.state)
 
         # Add neighbors to frontier
         for (action, state) in neighbors_for_person(node.state):
-            if not frontier.contains_state(state) and state not in explored:
+            if state not in queued and state not in explored:
                 child = Node(state=state, parent=node, action=action)
 
                 # If child is the goal, then we have a solution
-                # Slightly more efficient than lecture example
+                # Early return result, more efficient than lecture example
                 if child.state == target:
                     node = child
                     solution = []
@@ -132,6 +138,7 @@ def shortest_path(source, target):
                 # If child is not the goal, add to frontier
                 else:
                     frontier.add(child)
+                    queued.add(child.state)
 
 
 def person_id_for_name(name):
