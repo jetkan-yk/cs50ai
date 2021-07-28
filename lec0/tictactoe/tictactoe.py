@@ -9,6 +9,7 @@ X = "X"
 O = "O"
 EMPTY = None
 BOARD_SIZE = 3  # board size, e.g. 3 x 3 grid
+INF = 2  # utility is either -1, 0, 1
 
 
 def initial_state():
@@ -46,7 +47,9 @@ def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-    i, j = action
+    if action is None:
+        return board
+    (i, j) = action
 
     if i not in range(BOARD_SIZE):
         raise ValueError(f"i must be [0, {BOARD_SIZE})")
@@ -137,4 +140,58 @@ def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
-    raise NotImplementedError
+    best_action = None
+
+    # max player chooses move that maximizes the min values in next step
+    if player(board) == X:
+        best_value = -INF
+        for action in actions(board):
+            value = min_value(result(board, action))
+            # found killer move, return immediately
+            if value == 1:
+                return action
+            elif best_value < value:
+                best_value, best_action = value, action
+
+    # min player chooses move that minimizes the max values in next step
+    else:
+        best_value = INF
+        for action in actions(board):
+            value = max_value(result(board, action))
+            # found killer move, return immediately
+            if value == -1:
+                return action
+            elif best_value > value:
+                best_value, best_action = value, action
+
+    return best_action
+
+
+def max_value(board):
+    """
+    Returns the highest value for the current player.
+    """
+    if terminal(board):
+        return utility(board)
+    v = -INF
+    for action in actions(board):
+        v = max(v, min_value(result(board, action)))
+        # found killer move, prune other actions
+        if v == 1:
+            break
+    return v
+
+
+def min_value(board):
+    """
+    Returns the smallest value for the current player.
+    """
+    if terminal(board):
+        return utility(board)
+    v = INF
+    for action in actions(board):
+        v = min(v, max_value(result(board, action)))
+        # found killer move, prune other actions
+        if v == -1:
+            break
+    return v
