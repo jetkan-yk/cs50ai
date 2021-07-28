@@ -64,7 +64,42 @@ def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
-    raise NotImplementedError
+    # check horizontally
+    for row in board:
+        if row.count(X) == SIZE:
+            return X
+        elif row.count(O) == SIZE:
+            return O
+
+    # check vertically
+    for col in zip(*board):
+        if col.count(X) == SIZE:
+            return X
+        elif col.count(O) == SIZE:
+            return O
+
+    # check diagonally
+    center = board[SIZE // 2][SIZE // 2]
+
+    if center == EMPTY:
+        return None
+
+    # left diagonal
+    left_win = True
+    for i in range(SIZE):
+        if board[i][i] != center:
+            left_win = False
+
+    # right diagonal
+    right_win = True
+    for i in range(SIZE):
+        if board[i][-(i + 1)] != center:
+            right_win = False
+
+    if left_win or right_win:
+        return center
+    else:
+        return None
 
 
 def terminal(board):
