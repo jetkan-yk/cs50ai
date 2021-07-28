@@ -20,10 +20,10 @@ def player(board):
     """
     Returns player who has the next turn on a board.
     """
-    X_moves = sum(row.count(X) for row in board)
-    O_moves = sum(row.count(O) for row in board)
+    X_count = sum(row.count(X) for row in board)
+    O_count = sum(row.count(O) for row in board)
 
-    return X if X_moves <= O_moves else O
+    return X if X_count == O_count else O
 
 
 def actions(board):
