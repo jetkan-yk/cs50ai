@@ -49,6 +49,7 @@ def result(board, action):
     """
     if action is None:
         return board
+
     (i, j) = action
 
     if i not in range(BOARD_SIZE):
@@ -99,10 +100,7 @@ def winner(board):
         if board[i][-(i + 1)] != center:
             right_win = False
 
-    if left_win or right_win:
-        return center
-    else:
-        return None
+    return center if left_win or right_win else None
 
 
 def terminal(board):
@@ -141,6 +139,10 @@ def minimax(board):
     Returns the optimal action for the current player on the board.
     """
     best_action = None
+
+    # assign statistically best first move
+    if board == initial_state():
+        return (0, 0)
 
     # max player chooses move that maximizes the min values in next step
     if player(board) == X:
