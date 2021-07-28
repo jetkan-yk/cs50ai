@@ -8,7 +8,7 @@ import math
 X = "X"
 O = "O"
 EMPTY = None
-SIZE = 3  # board size, e.g. 3 x 3 grid
+BOARD_SIZE = 3  # board size, e.g. 3 x 3 grid
 
 
 def initial_state():
@@ -34,8 +34,8 @@ def actions(board):
     """
     result = set()
 
-    for i in range(SIZE):
-        for j in range(SIZE):
+    for i in range(BOARD_SIZE):
+        for j in range(BOARD_SIZE):
             if board[i][j] == EMPTY:
                 result.add((i, j))
 
@@ -48,10 +48,10 @@ def result(board, action):
     """
     i, j = action
 
-    if i not in range(SIZE):
-        raise ValueError(f"i must be [0, {SIZE})")
-    elif j not in range(SIZE):
-        raise ValueError(f"j must be [0, {SIZE})")
+    if i not in range(BOARD_SIZE):
+        raise ValueError(f"i must be [0, {BOARD_SIZE})")
+    elif j not in range(BOARD_SIZE):
+        raise ValueError(f"j must be [0, {BOARD_SIZE})")
     elif board[i][j] != EMPTY:
         raise ValueError(f"({i}, {j}) has been taken by player {board[i][j]}")
     else:
@@ -66,33 +66,33 @@ def winner(board):
     """
     # check horizontally
     for row in board:
-        if row.count(X) == SIZE:
+        if row.count(X) == BOARD_SIZE:
             return X
-        elif row.count(O) == SIZE:
+        elif row.count(O) == BOARD_SIZE:
             return O
 
     # check vertically
     for col in zip(*board):
-        if col.count(X) == SIZE:
+        if col.count(X) == BOARD_SIZE:
             return X
-        elif col.count(O) == SIZE:
+        elif col.count(O) == BOARD_SIZE:
             return O
 
     # check diagonally
-    center = board[SIZE // 2][SIZE // 2]
+    center = board[BOARD_SIZE // 2][BOARD_SIZE // 2]
 
     if center == EMPTY:
         return None
 
     # left diagonal
     left_win = True
-    for i in range(SIZE):
+    for i in range(BOARD_SIZE):
         if board[i][i] != center:
             left_win = False
 
     # right diagonal
     right_win = True
-    for i in range(SIZE):
+    for i in range(BOARD_SIZE):
         if board[i][-(i + 1)] != center:
             right_win = False
 
