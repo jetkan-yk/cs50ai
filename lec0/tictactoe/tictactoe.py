@@ -8,6 +8,7 @@ import math
 X = "X"
 O = "O"
 EMPTY = None
+SIZE = 3  # board size, e.g. 3 x 3 grid
 
 
 def initial_state():
@@ -33,8 +34,8 @@ def actions(board):
     """
     result = set()
 
-    for i in range(len(board)):
-        for j in range(len(board[0])):
+    for i in range(SIZE):
+        for j in range(SIZE):
             if board[i][j] == EMPTY:
                 result.add((i, j))
 
@@ -47,10 +48,10 @@ def result(board, action):
     """
     i, j = action
 
-    if i not in range(0, len(board)):
-        raise ValueError(f"i must be [0, {len(board)})")
-    elif j not in range(0, len(board[0])):
-        raise ValueError(f"j must be [0, {len(board[0])})")
+    if i not in range(SIZE):
+        raise ValueError(f"i must be [0, {SIZE})")
+    elif j not in range(SIZE):
+        raise ValueError(f"j must be [0, {SIZE})")
     elif board[i][j] != EMPTY:
         raise ValueError(f"({i}, {j}) has been taken by player {board[i][j]}")
     else:
