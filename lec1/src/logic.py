@@ -1,7 +1,3 @@
-class EvaluationException(Exception):
-    pass
-
-
 class Sentence:
     def evaluate(self, model):
         """Evaluates the logical sentence."""
@@ -63,7 +59,7 @@ class Symbol(Sentence):
         try:
             return bool(model[self.name])
         except KeyError:
-            raise EvaluationException(f"variable {self.name} not in model")
+            raise Exception(f"variable {self.name} not in model")
 
     def formula(self):
         return self.name
