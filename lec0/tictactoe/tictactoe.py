@@ -3,7 +3,6 @@ Tic Tac Toe Player
 """
 
 from copy import deepcopy
-import math
 
 X = "X"
 O = "O"
