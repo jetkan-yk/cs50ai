@@ -8,7 +8,7 @@ knowledge = And(
     Implication(Not(rain), hagrid),
     Or(hagrid, dumbledore),
     Not(And(hagrid, dumbledore)),
-    dumbledore
+    dumbledore,
 )
 
 print(model_check(knowledge, rain))
