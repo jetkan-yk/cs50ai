@@ -41,8 +41,14 @@ knowledge0 = And(
 # Puzzle 1
 # A says "We are both knaves."
 # B says nothing.
+ASays = And(AKnave, BKnave)
+
 knowledge1 = And(
-    # TODO
+    # Add characters
+    char(AKnight, AKnave),
+    char(BKnight, BKnave),
+    # Add statements
+    says(AKnight, AKnave, ASays),
 )
 
 # Puzzle 2
@@ -68,7 +74,7 @@ def main():
         ("Puzzle 0", knowledge0),
         ("Puzzle 1", knowledge1),
         ("Puzzle 2", knowledge2),
-        ("Puzzle 3", knowledge3)
+        ("Puzzle 3", knowledge3),
     ]
     for puzzle, knowledge in puzzles:
         print(puzzle)
