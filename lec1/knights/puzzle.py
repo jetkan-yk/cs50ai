@@ -72,8 +72,21 @@ knowledge2 = And(
 # B says "A said 'I am a knave'."
 # B says "C is a knave."
 # C says "A is a knight."
+ASays = Or(AKnight, AKnave)
+
+BSays = And(says(AKnight, AKnave, AKnave), CKnave)
+
+CSays = AKnight
+
 knowledge3 = And(
-    # TODO
+    # Add characters
+    char(AKnight, AKnave),
+    char(BKnight, BKnave),
+    char(CKnight, CKnave),
+    # Add statements
+    says(AKnight, AKnave, ASays),
+    says(BKnight, BKnave, BSays),
+    says(CKnight, CKnave, CSays),
 )
 
 
