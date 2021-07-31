@@ -9,6 +9,24 @@ BKnave = Symbol("B is a Knave")
 CKnight = Symbol("C is a Knight")
 CKnave = Symbol("C is a Knave")
 
+
+def Xor(P, Q):
+    return And(Or(P, Q), Not(And(P, Q)))
+
+
+# Add character
+# Can only be either a knight or knave, but not both
+def char(knight, knave):
+    return Xor(knight, knave)
+
+
+# Add statement
+# Either it is a knight and the statement is true,
+# or it is a knave and the statement is false
+def says(knight, knave, s):
+    return Or(And(knight, s), And(knave, Not(s)))
+
+
 # Puzzle 0
 # A says "I am both a knight and a knave."
 knowledge0 = And(
