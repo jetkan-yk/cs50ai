@@ -54,8 +54,17 @@ knowledge1 = And(
 # Puzzle 2
 # A says "We are the same kind."
 # B says "We are of different kinds."
+ASays = Or(And(AKnight, BKnight), And(AKnave, BKnave))
+
+BSays = Or(And(AKnight, BKnave), And(AKnave, BKnight))
+
 knowledge2 = And(
-    # TODO
+    # Add characters
+    char(AKnight, AKnave),
+    char(BKnight, BKnave),
+    # Add statements
+    says(AKnight, AKnave, ASays),
+    says(BKnight, BKnave, BSays),
 )
 
 # Puzzle 3
