@@ -72,7 +72,7 @@ knowledge2 = And(
 # B says "A said 'I am a knave'."
 # B says "C is a knave."
 # C says "A is a knight."
-ASays = Or(AKnight, AKnave)
+ASays = Xor(AKnight, AKnave)
 
 BSays = And(says(AKnight, AKnave, AKnave), CKnave)
 
