@@ -29,8 +29,13 @@ def says(knight, knave, s):
 
 # Puzzle 0
 # A says "I am both a knight and a knave."
+ASays = And(AKnight, AKnave)
+
 knowledge0 = And(
-    # TODO
+    # Add characters
+    char(AKnight, AKnave),
+    # Add statements
+    says(AKnight, AKnave, ASays),
 )
 
 # Puzzle 1
