@@ -216,6 +216,17 @@ class MinesweeperAI:
         sentence = Sentence(cells, count)
         self.knowledge.append(sentence)
 
+        # 4) mark any additional cells as safe or as mines
+        #    if it can be concluded based on the AI's knowledge base
+        known_mines = sentence.known_mines()
+        known_safes = sentence.known_safes()
+
+        for mine in known_mines:
+            self.mark_mine(mine)
+
+        for safe in known_safes:
+            self.mark_safe(safe)
+
     def make_safe_move(self):
         """
         Returns a safe cell to choose on the Minesweeper board.
