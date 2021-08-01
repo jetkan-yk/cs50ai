@@ -192,7 +192,7 @@ class MinesweeperAI:
         self.moves_made.add(cell)
 
         # 2) mark the cell as safe
-        self.safes.add(cell)
+        self.mark_safe(cell)
 
         # 3) add a new sentence to the AI's knowledge base
         #    based on the value of `cell` and `count`
@@ -211,21 +211,20 @@ class MinesweeperAI:
                 ):
                     cells.add((newI, newJ))
 
-        print("Make move:", cell)
-        print(f"Cells: {sorted(cells)} Count: {count}")
         sentence = Sentence(cells, count)
         self.knowledge.append(sentence)
 
         # 4) mark any additional cells as safe or as mines
         #    if it can be concluded based on the AI's knowledge base
-        known_mines = sentence.known_mines()
-        known_safes = sentence.known_safes()
+        for sentence in self.knowledge:
+            known_mines = sentence.known_mines()
+            known_safes = sentence.known_safes()
 
-        for mine in known_mines:
-            self.mark_mine(mine)
+            for mine in known_mines:
+                self.mark_mine(mine)
 
-        for safe in known_safes:
-            self.mark_safe(safe)
+            for safe in known_safes:
+                self.mark_safe(safe)
 
     def make_safe_move(self):
         """
