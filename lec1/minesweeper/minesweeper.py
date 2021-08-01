@@ -197,6 +197,18 @@ class MinesweeperAI:
 
         return Sentence(cells, count)
 
+    def infer_existing(self):
+        """
+        Loops through all sentences in knowledge base and
+        mark mines or safe where applicable
+        """
+        for sentence in self.knowledge:
+            for mine in sentence.known_mines():
+                self.mark_mine(mine)
+
+            for safe in sentence.known_safes():
+                self.mark_safe(safe)
+
     def add_knowledge(self, cell, count):
         """
         Called when the Minesweeper board tells us, for a given
@@ -225,15 +237,7 @@ class MinesweeperAI:
 
         # 4) mark any additional cells as safe or as mines
         #    if it can be concluded based on the AI's knowledge base
-        for sentence in self.knowledge:
-            known_mines = sentence.known_mines()
-            known_safes = sentence.known_safes()
-
-            for mine in known_mines:
-                self.mark_mine(mine)
-
-            for safe in known_safes:
-                self.mark_safe(safe)
+        self.infer_existing()
 
         # 5) add any new sentences to the AI's knowledge base
         #    if they can be inferred from existing knowledge
