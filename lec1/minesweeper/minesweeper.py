@@ -209,6 +209,18 @@ class MinesweeperAI:
             for safe in sentence.known_safes():
                 self.mark_safe(safe)
 
+        # remove empty and duplicate information in knowledge base
+        nonEmptyKnowledge = list(filter(lambda s: s.cells, self.knowledge))
+        uniqueCells = []
+        uniqueKnowledge = []
+
+        for sentence in nonEmptyKnowledge:
+            if sentence.cells not in uniqueCells:
+                uniqueCells.append(sentence.cells)
+                uniqueKnowledge.append(sentence)
+
+        self.knowledge = uniqueKnowledge
+
     def add_knowledge(self, cell, count):
         """
         Called when the Minesweeper board tells us, for a given
@@ -259,18 +271,7 @@ class MinesweeperAI:
 
                     self.knowledge.append(s)
 
-                    for sentence in self.knowledge:
-                        known_mines = sentence.known_mines()
-                        known_safes = sentence.known_safes()
-
-                        for mine in known_mines:
-                            self.mark_mine(mine)
-
-                        for safe in known_safes:
-                            self.mark_safe(safe)
-
-        # remove redundant information in knowledge base
-        self.knowledge = list(filter(lambda s: s.cells, self.knowledge))
+        self.infer_existing()
 
         print("Knowledge:")
         for s in self.knowledge:
