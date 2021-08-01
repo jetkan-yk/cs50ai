@@ -186,7 +186,33 @@ class MinesweeperAI:
             5) add any new sentences to the AI's knowledge base
                if they can be inferred from existing knowledge
         """
-        raise NotImplementedError
+        # 1) mark the cell as a move that has been made
+        self.moves_made.add(cell)
+
+        # 2) mark the cell as safe
+        self.safes.add(cell)
+
+        # 3) add a new sentence to the AI's knowledge base
+        #    based on the value of `cell` and `count`
+        (i, j) = cell
+        cells = set()
+        for dI in range(-1, 2):
+            for dJ in range(-1, 2):
+                newI = i + dI
+                newJ = j + dJ
+                # include all nearby cells, except the selected cell
+                if (
+                    newI in range(0, self.height)
+                    and newJ in range(0, self.width)
+                    and (newI, newJ) not in self.safes
+                    and (newI, newJ) not in self.mines
+                ):
+                    cells.add((newI, newJ))
+
+        print("Make move:", cell)
+        print(f"Cells: {sorted(cells)} Count: {count}")
+        sentence = Sentence(cells, count)
+        self.knowledge.append(sentence)
 
     def make_safe_move(self):
         """
