@@ -175,8 +175,9 @@ class MinesweeperAI:
 
     def make_sentence(self, cell, count):
         """
-        Makes a new sentence for the cell that has all nearby
-        unknown cells
+        Makes a new sentence where:
+        - cells := all nearby unknown cells (not in self.safes or self.mines)
+        - count := num of mines excluding those already flagged in self.mines
         """
         (i, j) = cell
         cells = set()
