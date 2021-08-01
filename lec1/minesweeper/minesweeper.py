@@ -202,14 +202,17 @@ class MinesweeperAI:
             for dJ in range(-1, 2):
                 newI = i + dI
                 newJ = j + dJ
-                # include all nearby cells, except the selected cell
+                # include all nearby unknown cells
                 if (
-                    newI in range(0, self.height)
-                    and newJ in range(0, self.width)
+                    0 <= newI < self.height
+                    and 0 <= newJ < self.width
+                    and (i, j) != (newI, newJ)
                     and (newI, newJ) not in self.safes
-                    and (newI, newJ) not in self.mines
                 ):
-                    cells.add((newI, newJ))
+                    if (newI, newJ) in self.mines:
+                        count -= 1
+                    else:
+                        cells.add((newI, newJ))
 
         sentence = Sentence(cells, count)
         self.knowledge.append(sentence)
@@ -229,41 +232,40 @@ class MinesweeperAI:
         # 5) add any new sentences to the AI's knowledge base
         #    if they can be inferred from existing knowledge
 
-        # for i in range(len(self.knowledge)):
-        #     for j in range(i + 1, len(self.knowledge)):
-        #         sentence1 = self.knowledge[i]
-        #         sentence2 = self.knowledge[j]
+        for i in range(len(self.knowledge)):
+            for j in range(i + 1, len(self.knowledge)):
+                sentence1 = self.knowledge[i]
+                sentence2 = self.knowledge[j]
 
-        #         cells1, count1 = sentence1.cells, sentence1.count
-        #         cells2, count2 = sentence2.cells, sentence2.count
+                cells1, count1 = sentence1.cells, sentence1.count
+                cells2, count2 = sentence2.cells, sentence2.count
 
-        #         if cells1 and cells1.issubset(cells2):
-        #             s = Sentence(cells2 - cells1, count2 - count1)
-        #             kb = [k.cells for k in self.knowledge]
+                if cells1 and cells1.issubset(cells2):
+                    s = Sentence(cells2 - cells1, count2 - count1)
+                    kb = [k.cells for k in self.knowledge]
 
-        #             if s.cells in kb:
-        #                 continue
+                    if s.cells in kb:
+                        continue
 
-        #             self.knowledge.append(s)
+                    self.knowledge.append(s)
 
-        #             for s2 in self.knowledge:
-        #                 known_mines = s2.known_mines()
-        #                 known_safes = s2.known_safes()
+                    for sentence in self.knowledge:
+                        known_mines = sentence.known_mines()
+                        known_safes = sentence.known_safes()
 
-        #                 for mine in known_mines:
-        #                     self.mark_mine(mine)
+                        for mine in known_mines:
+                            self.mark_mine(mine)
 
-        #                 for safe in known_safes:
-        #                     self.mark_safe(safe)
+                        for safe in known_safes:
+                            self.mark_safe(safe)
 
-        # # remove redundant information in knowledge base
-        # self.knowledge = list(filter(lambda s: s.cells, self.knowledge))
-        # print("Mines:", sorted(self.mines))
+        # remove redundant information in knowledge base
+        self.knowledge = list(filter(lambda s: s.cells, self.knowledge))
 
-        # print("Knowledge:")
-        # for s in self.knowledge:
-        #     print("    ", sorted(s.cells), "=", s.count)
-        # print()
+        print("Knowledge:")
+        for s in self.knowledge:
+            print("    ", sorted(s.cells), "=", s.count)
+        print()
 
     def make_safe_move(self):
         """
