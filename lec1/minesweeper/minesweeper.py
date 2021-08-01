@@ -105,7 +105,7 @@ class Sentence:
         Returns the set of all cells in self.cells known to be mines.
         """
         if len(self.cells) == self.count:
-            return self.cells.copy()
+            return self.cells
         return set()
 
     def known_safes(self):
@@ -113,7 +113,7 @@ class Sentence:
         Returns the set of all cells in self.cells known to be safe.
         """
         if self.count == 0:
-            return self.cells.copy()
+            return self.cells
         return set()
 
     def mark_mine(self, cell):
@@ -243,4 +243,6 @@ class MinesweeperAI:
                 if (i, j) not in self.moves_made and (i, j) not in self.mines:
                     moves.append((i, j))
 
-        return random.choice(moves)
+        if moves:
+            return random.choice(moves)
+        return None
