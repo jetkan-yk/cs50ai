@@ -197,7 +197,7 @@ class MinesweeperAI:
 
         return Sentence(cells, count)
 
-    def infer_existing(self):
+    def infer_mark(self):
         """
         Loops through all sentences in knowledge base and
         mark mines or safe where applicable
@@ -221,20 +221,23 @@ class MinesweeperAI:
 
         self.knowledge = uniqueKnowledge
 
+    def infer_subset(self):
+        """
+        Infer new sentence with any 2 existing sentences using
+        the subset method
+        """
+        for i in range(len(self.knowledge)):
+            for j in range(i + 1, len(self.knowledge)):
+                cells1, count1 = self.knowledge[i].cells, self.knowledge[i].count
+                cells2, count2 = self.knowledge[j].cells, self.knowledge[j].count
+
+                if cells1.issubset(cells2):
+                    self.knowledge.append(Sentence(cells2 - cells1, count2 - count1))
+
     def add_knowledge(self, cell, count):
         """
         Called when the Minesweeper board tells us, for a given
         safe cell, how many neighboring cells have mines in them.
-
-        This function should:
-            1) mark the cell as a move that has been made
-            2) mark the cell as safe
-            3) add a new sentence to the AI's knowledge base
-               based on the value of `cell` and `count`
-            4) mark any additional cells as safe or as mines
-               if it can be concluded based on the AI's knowledge base
-            5) add any new sentences to the AI's knowledge base
-               if they can be inferred from existing knowledge
         """
         # 1) mark the cell as a move that has been made
         self.moves_made.add(cell)
@@ -249,34 +252,26 @@ class MinesweeperAI:
 
         # 4) mark any additional cells as safe or as mines
         #    if it can be concluded based on the AI's knowledge base
-        self.infer_existing()
+        self.infer_mark()
 
         # 5) add any new sentences to the AI's knowledge base
         #    if they can be inferred from existing knowledge
+        while True:
+            loop = False
+            oldKbLen = len(self.knowledge)
 
-        for i in range(len(self.knowledge)):
-            for j in range(i + 1, len(self.knowledge)):
-                sentence1 = self.knowledge[i]
-                sentence2 = self.knowledge[j]
+            self.infer_subset()
+            self.infer_mark()
 
-                cells1, count1 = sentence1.cells, sentence1.count
-                cells2, count2 = sentence2.cells, sentence2.count
+            newKbLen = len(self.knowledge)
 
-                if cells1 and cells1.issubset(cells2):
-                    s = Sentence(cells2 - cells1, count2 - count1)
-                    kb = [k.cells for k in self.knowledge]
+            # if new information is generated, run the inference
+            # algorithm again for possible new inference
+            if oldKbLen != newKbLen:
+                loop = True
 
-                    if s.cells in kb:
-                        continue
-
-                    self.knowledge.append(s)
-
-        self.infer_existing()
-
-        print("Knowledge:")
-        for s in self.knowledge:
-            print("    ", sorted(s.cells), "=", s.count)
-        print()
+            if not loop:
+                break
 
     def make_safe_move(self):
         """
