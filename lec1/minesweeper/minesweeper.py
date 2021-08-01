@@ -173,6 +173,29 @@ class MinesweeperAI:
         for sentence in self.knowledge:
             sentence.mark_safe(cell)
 
+    def make_sentence(self, cell, count):
+        """
+        Makes a new sentence for the cell that has all nearby
+        unknown cells
+        """
+        (i, j) = cell
+        cells = set()
+        for dI in range(-1, 2):
+            for dJ in range(-1, 2):
+                newI = i + dI
+                newJ = j + dJ
+                if (
+                    0 <= newI < self.height
+                    and 0 <= newJ < self.width
+                    and (newI, newJ) not in self.safes
+                ):
+                    if (newI, newJ) in self.mines:
+                        count -= 1
+                    else:
+                        cells.add((newI, newJ))
+
+        return Sentence(cells, count)
+
     def add_knowledge(self, cell, count):
         """
         Called when the Minesweeper board tells us, for a given
@@ -196,25 +219,7 @@ class MinesweeperAI:
 
         # 3) add a new sentence to the AI's knowledge base
         #    based on the value of `cell` and `count`
-        (i, j) = cell
-        cells = set()
-        for dI in range(-1, 2):
-            for dJ in range(-1, 2):
-                newI = i + dI
-                newJ = j + dJ
-                # include all nearby unknown cells
-                if (
-                    0 <= newI < self.height
-                    and 0 <= newJ < self.width
-                    and (i, j) != (newI, newJ)
-                    and (newI, newJ) not in self.safes
-                ):
-                    if (newI, newJ) in self.mines:
-                        count -= 1
-                    else:
-                        cells.add((newI, newJ))
-
-        sentence = Sentence(cells, count)
+        sentence = self.make_sentence(cell, count)
         self.knowledge.append(sentence)
 
         # 4) mark any additional cells as safe or as mines
