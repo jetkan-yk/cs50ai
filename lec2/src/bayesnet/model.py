@@ -1,3 +1,4 @@
+# pyright: reportUndefinedVariable=false
 from pomegranate import *
 
 # Rain node has no parents
