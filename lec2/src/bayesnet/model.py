@@ -1,5 +1,4 @@
-# pyright: reportUndefinedVariable=false
-from pomegranate import *
+from pomegranate import BayesianNetwork, DiscreteDistribution, ConditionalProbabilityTable, Node
 
 # Rain node has no parents
 rain = Node(DiscreteDistribution({
