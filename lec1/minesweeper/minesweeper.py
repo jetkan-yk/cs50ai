@@ -197,6 +197,21 @@ class MinesweeperAI:
 
         return Sentence(cells, count)
 
+    def cleanup_knowledge(self):
+        """
+        Removes empty and duplicate information in knowledge base
+        """
+        nonEmptyKnowledge = list(filter(lambda s: s.cells, self.knowledge))
+        uniqueCells = []
+        uniqueKnowledge = []
+
+        for sentence in nonEmptyKnowledge:
+            if sentence.cells not in uniqueCells:
+                uniqueCells.append(sentence.cells)
+                uniqueKnowledge.append(sentence)
+
+        self.knowledge = uniqueKnowledge
+
     def infer_mark(self):
         """
         Loops through all sentences in knowledge base and
@@ -209,17 +224,7 @@ class MinesweeperAI:
             for safe in sentence.known_safes():
                 self.mark_safe(safe)
 
-        # remove empty and duplicate information in knowledge base
-        nonEmptyKnowledge = list(filter(lambda s: s.cells, self.knowledge))
-        uniqueCells = []
-        uniqueKnowledge = []
-
-        for sentence in nonEmptyKnowledge:
-            if sentence.cells not in uniqueCells:
-                uniqueCells.append(sentence.cells)
-                uniqueKnowledge.append(sentence)
-
-        self.knowledge = uniqueKnowledge
+        self.cleanup_knowledge()
 
     def infer_subset(self):
         """
