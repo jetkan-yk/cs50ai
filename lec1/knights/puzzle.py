@@ -2,29 +2,34 @@ from logic import *
 
 AKnight = Symbol("A is a Knight")
 AKnave = Symbol("A is a Knave")
+A = (AKnight, AKnave)
 
 BKnight = Symbol("B is a Knight")
 BKnave = Symbol("B is a Knave")
+B = (BKnight, BKnave)
 
 CKnight = Symbol("C is a Knight")
 CKnave = Symbol("C is a Knave")
+C = (CKnight, CKnave)
 
 
 def Xor(P, Q):
     return And(Or(P, Q), Not(And(P, Q)))
 
 
-# Add character
-# Can only be either a knight or knave, but not both
-def char(knight, knave):
+# Add character P
+# P can only be either a knight or knave, but not both
+def add_char(P):
+    (knight, knave) = P
     return Xor(knight, knave)
 
 
-# Add statement
-# Either it is a knight and the statement is true,
-# or it is a knave and the statement is false
-def says(knight, knave, s):
-    return Or(And(knight, s), And(knave, Not(s)))
+# Character P makes statement S
+# Either P is a knight and the statement S is true,
+# or P is a knave and the statement S is false
+def make_stmt(P, S):
+    (knight, knave) = P
+    return Or(And(knight, S), And(knave, Not(S)))
 
 
 # Puzzle 0
@@ -33,9 +38,9 @@ ASays = And(AKnight, AKnave)
 
 knowledge0 = And(
     # Add characters
-    char(AKnight, AKnave),
-    # Add statements
-    says(AKnight, AKnave, ASays),
+    add_char(A),
+    # Make statements
+    make_stmt(A, ASays),
 )
 
 # Puzzle 1
@@ -45,26 +50,25 @@ ASays = And(AKnave, BKnave)
 
 knowledge1 = And(
     # Add characters
-    char(AKnight, AKnave),
-    char(BKnight, BKnave),
+    add_char(A),
+    add_char(B),
     # Add statements
-    says(AKnight, AKnave, ASays),
+    make_stmt(A, ASays),
 )
 
 # Puzzle 2
 # A says "We are the same kind."
 # B says "We are of different kinds."
 ASays = Or(And(AKnight, BKnight), And(AKnave, BKnave))
-
 BSays = Or(And(AKnight, BKnave), And(AKnave, BKnight))
 
 knowledge2 = And(
     # Add characters
-    char(AKnight, AKnave),
-    char(BKnight, BKnave),
+    add_char(A),
+    add_char(B),
     # Add statements
-    says(AKnight, AKnave, ASays),
-    says(BKnight, BKnave, BSays),
+    make_stmt(A, ASays),
+    make_stmt(B, BSays),
 )
 
 # Puzzle 3
@@ -73,20 +77,20 @@ knowledge2 = And(
 # B says "C is a knave."
 # C says "A is a knight."
 ASays = Xor(AKnight, AKnave)
-
-BSays = And(says(AKnight, AKnave, AKnave), CKnave)
-
+BSays1 = make_stmt(A, AKnave)
+BSays2 = CKnave
 CSays = AKnight
 
 knowledge3 = And(
     # Add characters
-    char(AKnight, AKnave),
-    char(BKnight, BKnave),
-    char(CKnight, CKnave),
+    add_char(A),
+    add_char(B),
+    add_char(C),
     # Add statements
-    says(AKnight, AKnave, ASays),
-    says(BKnight, BKnave, BSays),
-    says(CKnight, CKnave, CSays),
+    make_stmt(A, ASays),
+    make_stmt(B, BSays1),
+    make_stmt(B, BSays2),
+    make_stmt(C, CSays),
 )
 
 
