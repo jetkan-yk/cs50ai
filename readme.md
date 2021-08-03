@@ -1,5 +1,7 @@
 # CS50's Introduction to Artificial Intelligence with Python
 
+:exclamation: Important :exclamation: This repository contains solution to the CS50 AI projects. Please abide by the course's [Academic Honesty policy](https://cs50.harvard.edu/ai/2020/honesty/) if you intend to take this course in the future.
+
 | Week                                           | Lecture                                     | Concept                                                                                  | Name                                           | Description                                                                                                              | How to Run            |
 | ---------------------------------------------- | ------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | --------------------- |
 | [0](https://cs50.harvard.edu/ai/2020/weeks/0/) | [Search](https://youtu.be/WbzNRTTrX0g)      | [BFS](https://cs50.harvard.edu/ai/2020/notes/0/#breadth-first-search)                    | [Degrees](lec0/degrees/degrees.py)             | [Determine how many “degrees of separation” apart two actors are.](https://cs50.harvard.edu/ai/2020/projects/0/degrees/) | `$ python degrees.py` |
