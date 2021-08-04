@@ -161,11 +161,11 @@ def normalize(probabilities):
     for person in probabilities.values():
         # Loop each random variables (i.e. "gene" and "trait")
         for variable in person.values():
-            # Get the sum of all probability distribution under the same category
+            # Get the sum of probability distribution of the random variable
             denominator = sum(variable.values())
-            for value, probability in variable.items():
-                # Normalize distribution value by diving with the sum
-                variable[value] = probability / denominator
+            for outcome, probability in variable.items():
+                # Normalize the probability distribution by dividing the sum
+                variable[outcome] = probability / denominator
 
 
 if __name__ == "__main__":
