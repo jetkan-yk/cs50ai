@@ -1,6 +1,5 @@
 from pprint import pp
-from random import randint, random, sample
-from collections import Counter
+from random import randint, random
 
 from pytest import approx
 
