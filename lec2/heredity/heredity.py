@@ -157,7 +157,15 @@ def normalize(probabilities):
     Update `probabilities` such that each probability distribution
     is normalized (i.e., sums to 1, with relative proportions the same).
     """
-    raise NotImplementedError
+    # Loop each person's probability distribution
+    for person in probabilities.values():
+        # Loop each random variables (i.e. "gene" and "trait")
+        for variable in person.values():
+            # Get the sum of all probability distribution under the same category
+            denominator = sum(variable.values())
+            for value, probability in variable.items():
+                # Normalize distribution value by diving with the sum
+                variable[value] = probability / denominator
 
 
 if __name__ == "__main__":
