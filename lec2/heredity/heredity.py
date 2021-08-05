@@ -236,7 +236,7 @@ def joint_probability(people, one_gene, two_genes, have_trait):
             predict_gene(person, people, one_gene, two_genes)
             * PROBS["trait"][gene][trait]
         )
-    # Calculate joint probability of the population by multiply each individual's probability
+    # Calculate joint probability of the population by multiplying every individual's probability
     return np.prod(joint)
 
 
@@ -248,17 +248,11 @@ def update(probabilities, one_gene, two_genes, have_trait, p):
     the person is in `have_gene` and `have_trait`, respectively.
     """
     for person, distribution in probabilities.items():
-        if person in two_genes:
-            distribution["gene"][2] += p
-        elif person in one_gene:
-            distribution["gene"][1] += p
-        else:
-            distribution["gene"][0] += p
+        gene = get_gene(person, one_gene, two_genes)
+        trait = person in have_trait
 
-        if person in have_trait:
-            distribution["trait"][True] += p
-        else:
-            distribution["trait"][False] += p
+        distribution["gene"][gene] += p
+        distribution["trait"][trait] += p
 
 
 def normalize(probabilities):
