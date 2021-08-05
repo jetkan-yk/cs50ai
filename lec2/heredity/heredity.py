@@ -163,14 +163,30 @@ def has_parent(people, person):
     return people[person]["mother"] is not None
 
 
-def predict(people, person, gene):
+def get_gene(person, one_gene, two_genes):
+    return (2 if person in two_genes else
+            1 if person in one_gene else 0)
+
+
+def predict(person, gene, people, one_gene, two_genes):
     """
     Predict the probability of a person having the particular gene count
     """
     # If person has parent information, predict P(G=gene) by enumerating all possible
     # ways of obtaining G=gene number of genes
     if has_parent(people, person):
-        raise NotImplementedError
+        father = people[person]["father"]
+        mother = people[person]["mother"]
+
+        # Get father and mother's gene counts from evidence
+        f_gene = get_gene(father, one_gene, two_genes)
+        m_gene = get_gene(mother, one_gene, two_genes)
+
+        # Loop over all possible ways of obtaining genes
+        # Each (f, m) tuples represent number of genes inherited from father and mother
+        inherit = [(f, m) for f in range(3) for m in range(3) if f + m == gene]
+        for (from_f, from_m) in inherit:
+            raise NotImplementedError
 
     # Otherwise, return the unconditional probability of P(G=gene)
     else:
@@ -191,12 +207,14 @@ def joint_probability(people, one_gene, two_genes, have_trait):
     joint = []
 
     for person in people:
-        gene = (2 if person in two_genes else
-                1 if person in one_gene else 0)
+        gene = get_gene(person, one_gene, two_genes)
         trait = person in have_trait
 
         # P(G, T) = P(G) * P(T | G)
-        joint.append(predict(people, person, gene) * PROBS["trait"][gene][trait])
+        joint.append(
+            predict(person, gene, people, one_gene, two_genes)
+            * PROBS["trait"][gene][trait]
+        )
 
     # Calculate joint probability of the population by multiply each individual's probability
     return np.prod(joint)

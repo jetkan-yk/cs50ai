@@ -91,13 +91,27 @@ def test_update():
 
 
 def test_has_parent():
-    print(
-        "\n\n======================== Testing has_parent() ========================\n"
-    )
-
     people = load_data("data/family0.csv")
 
     expected = {"Harry": True, "James": False, "Lily": False}
 
     for person in people:
         assert has_parent(people, person) == expected[person]
+
+
+def test_ways():
+    expected = {0: [(0, 0)], 1: [(0, 1), (1, 0)], 2: [(0, 2), (1, 1), (2, 0)]}
+
+    for gene in range(3):
+        assert [
+            (f, m) for f in range(3) for m in range(3) if f + m == gene
+        ] == expected[gene]
+
+
+def test_get_gene():
+    people = load_data("data/family0.csv")
+
+    expected = {"Harry": 0, "James": 1, "Lily": 2}
+
+    for person in people:
+        assert get_gene(person, {"James"}, {"Lily"}) == expected[person]
