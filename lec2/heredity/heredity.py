@@ -168,11 +168,27 @@ def get_gene(person, one_gene, two_genes):
             1 if person in one_gene else 0)
 
 
-def predict_inherit(outcome, evidence):
+def predict_inherit(parent, child):
     """
-    Predict the probability of inheriting outcome gene count from evidence (parent)
+    Predict the probability of child inherited the gene count from one parent
     """
-    raise NotImplementedError
+    # Impossible for a child to inherit 2 genes from one parent
+    if child == 2:
+        return 0
+    # Child has either 0 or 1 gene
+    elif parent == 1:
+        # Child has 0: P(inherits impairment gene) * P(mutate) + P(inherits normal gene) * P(¬mutate)
+        # Child has 1: P(inherits impairment gene) * P(¬mutate) + P(inherits normal gene) * P(mutate)
+        # Either of the cases have probability of 0.5
+        return 0.5
+    elif (parent == 0 and child == 1) or (parent == 2 and child == 0):
+        # Mutation must has occured
+        return PROBS["mutation"]
+    elif (parent == 0 and child == 0) or (parent == 2 and child == 1):
+        # Mutation must not has occured
+        return 1 - PROBS["mutation"]
+    else:
+        raise ValueError
 
 
 def predict_gene(person, gene, people, one_gene, two_genes):
@@ -196,7 +212,7 @@ def predict_gene(person, gene, people, one_gene, two_genes):
         for (from_f, from_m) in ways:
             # Probability of inheriting from_f genes from father AND from_m genes from mother
             union.append(
-                predict_inherit(from_f, f_gene) * predict_inherit(from_m, m_gene)
+                predict_inherit(f_gene, from_f) * predict_inherit(m_gene, from_m)
             )
         # Sum all possible ways of inheriting G=gene number of genes from parents
         return np.sum(union)
