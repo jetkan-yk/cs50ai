@@ -88,3 +88,16 @@ def test_update():
     assert all(item == group3[0] for item in group3)
     assert all(item == group4[0] for item in group4)
     assert all(item == group5[0] for item in group5)
+
+
+def test_has_parent():
+    print(
+        "\n\n======================== Testing has_parent() ========================\n"
+    )
+
+    people = load_data("data/family0.csv")
+
+    expected = {"Harry": True, "James": False, "Lily": False}
+
+    for person in people:
+        assert has_parent(people, person) == expected[person]

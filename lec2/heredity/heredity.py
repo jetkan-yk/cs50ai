@@ -63,10 +63,10 @@ def main():
     }
 
     """
-    Given a set of people, whom each of them has a random variable T = {True, False}, 
+    Given a set of people, whom each of them has a random variable T = {True, False},
     represents the person has trait of hearing impairment or not.
 
-    Calculate the probability distribution of each person's random 
+    Calculate the probability distribution of each person's random
     variable G = {0, 1, 2}, the number of genes that person has.
 
     Query X, the probability distribution of G for each person
@@ -154,11 +154,28 @@ def powerset(s):
         )
     ]
 
-def predict(person, gene):
+
+def has_parent(people, person):
+    """
+    Returns True if the person has parent information, otherwise False
+    Note: father & mother's information are either both present or both absent
+    """
+    return people[person]["mother"] is not None
+
+
+def predict(people, person, gene):
     """
     Predict the probability of a person having the particular gene count
     """
-    raise NotImplementedError
+    # If person has parent information, predict P(G=gene) by enumerating all possible
+    # ways of obtaining G=gene number of genes
+    if has_parent(people, person):
+        raise NotImplementedError
+
+    # Otherwise, return the unconditional probability of P(G=gene)
+    else:
+        return PROBS["gene"][gene]
+
 
 def joint_probability(people, one_gene, two_genes, have_trait):
     """
@@ -174,12 +191,14 @@ def joint_probability(people, one_gene, two_genes, have_trait):
     joint = []
 
     for person in people:
-        gene = (2 if person in two_genes else 
+        gene = (2 if person in two_genes else
                 1 if person in one_gene else 0)
         trait = person in have_trait
 
-        joint.append(predict(person, gene) * PROBS["trait"][gene][trait])
+        # P(G, T) = P(G) * P(T | G)
+        joint.append(predict(people, person, gene) * PROBS["trait"][gene][trait])
 
+    # Calculate joint probability of the population by multiply each individual's probability
     return np.prod(joint)
 
 
@@ -197,7 +216,7 @@ def update(probabilities, one_gene, two_genes, have_trait, p):
             distribution["gene"][1] += p
         else:
             distribution["gene"][0] += p
-        
+
         if person in have_trait:
             distribution["trait"][True] += p
         else:
