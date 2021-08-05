@@ -171,12 +171,9 @@ def get_gene(person, one_gene, two_genes):
 def predict_inherit(parent, child):
     """
     Predict the probability of child inherited the gene count from one parent
+    Note: parent = {0, 1, 2}, child = {0, 1}
     """
-    # Impossible for a child to inherit 2 genes from one parent
-    if child == 2:
-        return 0
-    # Child has either 0 or 1 gene
-    elif parent == 1:
+    if parent == 1:
         # Child has 0: P(inherits impairment gene) * P(mutate) + P(inherits normal gene) * P(¬mutate)
         # Child has 1: P(inherits impairment gene) * P(¬mutate) + P(inherits normal gene) * P(mutate)
         # Either of the cases have probability of 0.5
@@ -208,13 +205,13 @@ def predict_gene(person, gene, people, one_gene, two_genes):
         # Loop over all possible ways of obtaining genes
         union = []
         # Each (f, m) tuples represent number of genes inherited from father and mother respectively
-        ways = [(f, m) for f in range(3) for m in range(3) if f + m == gene]
+        ways = [(f, m) for f in range(2) for m in range(2) if f + m == gene]
         for (from_f, from_m) in ways:
             # Probability of inheriting from_f genes from father AND from_m genes from mother
             union.append(
                 predict_inherit(f_gene, from_f) * predict_inherit(m_gene, from_m)
             )
-        # Sum all possible ways of inheriting G=gene number of genes from parents
+        # Sum all possible ways of inheriting G=gene number of genes from both parents
         return np.sum(union)
 
     # Otherwise, return the unconditional probability of P(G=gene)
