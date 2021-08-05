@@ -95,7 +95,7 @@ def test_has_parent():
     expected = {"Harry": True, "James": False, "Lily": False}
 
     for person in people:
-        assert has_parent(people, person) == expected[person]
+        assert has_parent(person, people) == expected[person]
 
 
 def test_ways():

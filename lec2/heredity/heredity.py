@@ -155,7 +155,7 @@ def powerset(s):
     ]
 
 
-def has_parent(people, person):
+def has_parent(person, people):
     """
     Returns True if the person has parent information, otherwise False
     Note: father & mother's information are either both present or both absent
@@ -187,13 +187,14 @@ def predict_inherit(parent, child):
         return 1 - PROBS["mutation"]
 
 
-def predict_gene(person, gene, people, one_gene, two_genes):
+def predict_gene(person, people, one_gene, two_genes):
     """
     Predict the probability of a person having the particular gene count
     """
+    gene = get_gene(person, one_gene, two_genes)
     # If person has parent information, predict P(G=gene) by enumerating all possible
     # ways of obtaining G=gene number of genes from both parents
-    if has_parent(people, person):
+    if has_parent(person, people):
         father = people[person]["father"]
         mother = people[person]["mother"]
 
@@ -234,7 +235,7 @@ def joint_probability(people, one_gene, two_genes, have_trait):
 
         # P(G, T) = P(G) * P(T | G)
         joint.append(
-            predict_gene(person, gene, people, one_gene, two_genes)
+            predict_gene(person, people, one_gene, two_genes)
             * PROBS["trait"][gene][trait]
         )
 
