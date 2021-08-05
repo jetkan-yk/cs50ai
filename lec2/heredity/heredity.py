@@ -60,6 +60,31 @@ def main():
         for person in people
     }
 
+    """
+    Given a set of people, whom each of them has a random variable T = {True, False}, 
+    represents the person has trait of hearing impairment or not.
+
+    Calculate the probability distribution of each person's random 
+    variable G = {0, 1, 2}, the number of genes that person has.
+
+    Query X, the probability distribution of G for each person
+    Evidence E, the set of people that are assigned to T = {True, False}
+    Hidden Y, the set of people that are not assigned to T
+
+    Mathematically,
+      P(G | T)
+    = α [Σ_(Y=y) P(G, T, y)]
+
+    Hence, the have_trait loop below enumerates all possible cases of T
+    for each people that are not assigned to T.
+
+    For example, people = ["Harry", "Ron", "Charlie"] and given that
+        T["Harry"] = True, T["Ron"] = False, T["Charlie"] = None (unknown/hidden),
+    We need to enumerate these 2 cases:
+        T["Harry"] = True, T["Ron"] = False, T["Charlie"] = True
+        T["Harry"] = True, T["Ron"] = False, T["Charlie"] = False
+    and sum their joint probability as per the enumeration of hidden variables.
+    """
     # Loop over all sets of people who might have the trait
     names = set(people)
     for have_trait in powerset(names):
