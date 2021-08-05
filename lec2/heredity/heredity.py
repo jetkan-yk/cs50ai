@@ -183,7 +183,7 @@ def predict_inherit(parent, child):
         # Mutation must have occured
         return PROBS["mutation"]
     else:
-        # Mutation must not have occured
+        # No mutation
         return 1 - PROBS["mutation"]
 
 
