@@ -206,9 +206,7 @@ def predict_gene(person, gene, people, one_gene, two_genes):
         # Each (f, m) tuples represent number of genes inherited from father and mother respectively
         ways = [(f, m) for f in range(2) for m in range(2) if f + m == gene]
         for (f, m) in ways:
-            union.append(
-                predict_inherit(f_gene, f) * predict_inherit(m_gene, m)
-            )
+            union.append(predict_inherit(f_gene, f) * predict_inherit(m_gene, m))
         # Sum all possible ways of inheriting G=gene number of genes from both parents
         return np.sum(union)
 
