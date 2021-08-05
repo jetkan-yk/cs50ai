@@ -178,14 +178,13 @@ def predict_inherit(parent, child):
         # Child has 1: P(inherits impairment gene) * P(¬mutate) + P(inherits normal gene) * P(mutate)
         # Either of the cases have probability of 0.5
         return 0.5
-    elif (parent == 0 and child == 1) or (parent == 2 and child == 0):
-        # Mutation must has occured
+    elif bool(parent) != bool(child):
+        # Parent has gene but child no gene, or vice versa
+        # Mutation must have occured
         return PROBS["mutation"]
-    elif (parent == 0 and child == 0) or (parent == 2 and child == 1):
-        # Mutation must not has occured
-        return 1 - PROBS["mutation"]
     else:
-        raise ValueError
+        # Mutation must not have occured
+        return 1 - PROBS["mutation"]
 
 
 def predict_gene(person, gene, people, one_gene, two_genes):
@@ -193,7 +192,7 @@ def predict_gene(person, gene, people, one_gene, two_genes):
     Predict the probability of a person having the particular gene count
     """
     # If person has parent information, predict P(G=gene) by enumerating all possible
-    # ways of obtaining G=gene number of genes
+    # ways of obtaining G=gene number of genes from both parents
     if has_parent(people, person):
         father = people[person]["father"]
         mother = people[person]["mother"]
@@ -202,14 +201,13 @@ def predict_gene(person, gene, people, one_gene, two_genes):
         f_gene = get_gene(father, one_gene, two_genes)
         m_gene = get_gene(mother, one_gene, two_genes)
 
-        # Loop over all possible ways of obtaining genes
+        # Loop over all possible ways of obtaining G=gene number of genes
         union = []
         # Each (f, m) tuples represent number of genes inherited from father and mother respectively
         ways = [(f, m) for f in range(2) for m in range(2) if f + m == gene]
-        for (from_f, from_m) in ways:
-            # Probability of inheriting from_f genes from father AND from_m genes from mother
+        for (f, m) in ways:
             union.append(
-                predict_inherit(f_gene, from_f) * predict_inherit(m_gene, from_m)
+                predict_inherit(f_gene, f) * predict_inherit(m_gene, m)
             )
         # Sum all possible ways of inheriting G=gene number of genes from both parents
         return np.sum(union)
