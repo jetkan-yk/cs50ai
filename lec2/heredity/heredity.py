@@ -168,7 +168,14 @@ def get_gene(person, one_gene, two_genes):
             1 if person in one_gene else 0)
 
 
-def predict(person, gene, people, one_gene, two_genes):
+def predict_inherit(outcome, evidence):
+    """
+    Predict the probability of inheriting outcome gene count from evidence (parent)
+    """
+    raise NotImplementedError
+
+
+def predict_gene(person, gene, people, one_gene, two_genes):
     """
     Predict the probability of a person having the particular gene count
     """
@@ -183,10 +190,16 @@ def predict(person, gene, people, one_gene, two_genes):
         m_gene = get_gene(mother, one_gene, two_genes)
 
         # Loop over all possible ways of obtaining genes
-        # Each (f, m) tuples represent number of genes inherited from father and mother
-        inherit = [(f, m) for f in range(3) for m in range(3) if f + m == gene]
-        for (from_f, from_m) in inherit:
-            raise NotImplementedError
+        union = []
+        # Each (f, m) tuples represent number of genes inherited from father and mother respectively
+        ways = [(f, m) for f in range(3) for m in range(3) if f + m == gene]
+        for (from_f, from_m) in ways:
+            # Probability of inheriting from_f genes from father AND from_m genes from mother
+            union.append(
+                predict_inherit(from_f, f_gene) * predict_inherit(from_m, m_gene)
+            )
+        # Sum all possible ways of inheriting G=gene number of genes from parents
+        return np.sum(union)
 
     # Otherwise, return the unconditional probability of P(G=gene)
     else:
@@ -212,7 +225,7 @@ def joint_probability(people, one_gene, two_genes, have_trait):
 
         # P(G, T) = P(G) * P(T | G)
         joint.append(
-            predict(person, gene, people, one_gene, two_genes)
+            predict_gene(person, gene, people, one_gene, two_genes)
             * PROBS["trait"][gene][trait]
         )
 
