@@ -32,7 +32,7 @@ Each project contains a `test.py` and `unit_test.py` file which I've written whi
 
 - Run `pytest -s` to show print statements in the console
 - Run `pytest -vv` for verbose mode
-- Install `pyrepeat` with `pip` and then run `pytest --count n` to repeat the test for n times
+- Install `pyrepeat` with `pip` and then run `pytest --count n` to repeat the test for *n* times
 
 ## 💻 My Setup
 
