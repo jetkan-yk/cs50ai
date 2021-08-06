@@ -34,7 +34,7 @@ Each project contains a `test.py` and `unit_test.py` file which I've written whi
 - Run `pytest -vv` for verbose mode
 - Install `pyrepeat` with `pip` and then run `pytest --count n` to repeat the test for n times
 
-## My system
+## 💻 My Setup
 
 Each test cases should take about 1~2 seconds, depends on your code efficiency.
 
@@ -42,3 +42,4 @@ Each test cases should take about 1~2 seconds, depends on your code efficiency.
 - Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz
 - Python 3.9.5 64-bit
 - Pylance w/ Visual Studio Code (latest release)
+- Code formatter: black
