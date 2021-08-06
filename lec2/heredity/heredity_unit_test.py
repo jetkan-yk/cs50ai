@@ -1,5 +1,12 @@
 """
 Unit tests for functions in heredity.py
+
+These tests will only work if your own version of heredity.py
+also happen to have implemented the same functions as mine!
+Feel free to replace the unit test functions with your version.
+
+'Why do we fall sir? So that we can learn to pick ourselves up.'
+                                        - Batman Begins (2005)
 """
 import pprint as pp
 import random as rd
