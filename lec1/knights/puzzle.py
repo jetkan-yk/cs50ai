@@ -25,11 +25,12 @@ def add_char(P):
 
 
 # Character P makes statement S
-# Either P is a knight and the statement S is true,
-# or P is a knave and the statement S is false
+# If P is a knight, then S is true
+# If P is a knave, then S is false
+# Both implications must be true by definition
 def make_stmt(P, S):
     (knight, knave) = P
-    return Or(And(knight, S), And(knave, Not(S)))
+    return And(Implication(knight, S), Implication(knave, Not(S)))
 
 
 # Puzzle 0
