@@ -6,7 +6,7 @@ This repository contains solutions to the CS50 AI projects. If you intend to tak
 
 ## 🩺 Test Cases
 
-Each project contains a `test.py` and `unit_test.py` file which I've written while solving the problem. Feel free to use it to test your own solutions!
+Each project contains a `test.py` and `unit_test.py` file which I've written while solving the problem. Feel free to use it to test your own solutions! The test files are spoiler-free (does not contain solution to the projects).
 
 ## 📖 Table of Contents
 
