@@ -36,7 +36,7 @@ Each project contains a `test.py` and `unit_test.py` file which I've written whi
 
 ## 💻 My Setup
 
-Each test cases should take about 1~2 seconds, depends on your code efficiency.
+Each test case should take less than 30 seconds, depending on Python's I/O and your code efficiency.
 
 - Windows 10 Home Build 19042
 - Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz
