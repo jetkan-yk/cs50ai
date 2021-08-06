@@ -6,9 +6,11 @@ Make sure that you placed this file in the same directory as minesweeper.py!
 'Why do we fall sir? So that we can learn to pick ourselves up.'
                                         - Batman Begins (2005)
 """
+import pytest as pt
+
 from minesweeper import Minesweeper, MinesweeperAI
 
-# Feel free to change these stats for different expectation
+# Feel free to change these numbers for different expectation
 HEIGHT = 12
 WIDTH = 12
 MINES = 8
@@ -16,63 +18,29 @@ expectedWinPercent = 90
 
 # Run the AI test for 10 times. Each test consists of letting the AI play
 # minesweeper for 1000 rounds. If the inference function is implemented correctly,
-# each test should have a very high win rate (>90%). Run `pytest -s` to see win rate.
+# each test should have a very high win rate (≈90%) in most of the iterations.
+# Use`pytest -s` to see win rate.
 
 
-def test_0():
-    run1000()
-
-
-def test_1():
-    run1000()
-
-
-def test_2():
-    run1000()
-
-
-def test_3():
-    run1000()
-
-
-def test_4():
-    run1000()
-
-
-def test_5():
-    run1000()
-
-
-def test_6():
-    run1000()
-
-
-def test_7():
-    run1000()
-
-
-def test_8():
-    run1000()
-
-
-def test_9():
-    run1000()
+@pt.mark.parametrize("execution_number", range(10))
+def test(execution_number):
+    play1000()
 
 
 # Helper functions
 
 
-def run1000():
+def play1000():
     totalWon = 0
     for _ in range(1000):
-        totalWon += run()
+        totalWon += play()
 
     print(f"\nWin rate:{totalWon // 10}%")
 
-    assert totalWon >= expectedWinPercent
+    assert totalWon >= expectedWinPercent * 10
 
 
-def run():
+def play():
     game = Minesweeper(height=HEIGHT, width=WIDTH, mines=MINES)
     ai = MinesweeperAI(height=HEIGHT, width=WIDTH)
 
