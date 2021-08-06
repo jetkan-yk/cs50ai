@@ -1,119 +1,11 @@
-from pprint import pp
-from random import randint, random
+"""
+Regression tests for heredity.py
+"""
+import pytest as pt
 
-from helper import compare, predict_family
-from heredity import *
+from heredity import joint_probability, load_data, normalize, powerset, update
 
-
-def test_normalize():
-    print("\n\n======================== Testing normalize() ========================\n")
-
-    people = [f"Person{n}" for n in range(randint(0, 10))]
-
-    probabilities = {
-        person: {
-            "gene": {2: random(), 1: random(), 0: random()},
-            "trait": {True: random(), False: random()},
-        }
-        for person in people
-    }
-
-    print("Before normalize:")
-    pp(probabilities)
-
-    normalize(probabilities)
-
-    print("\nAfter normalize:")
-    pp(probabilities)
-
-    for person in probabilities.values():
-        for variable in person.values():
-            assert round(sum(variable.values())) == 1
-
-
-def test_update():
-    print("\n\n======================== Testing update() ========================\n")
-
-    people = [f"Person{n}" for n in range(9)]
-
-    probabilities = {
-        person: {
-            "gene": {2: 0, 1: 0, 0: 0},
-            "trait": {True: 0, False: 0},
-        }
-        for person in people
-    }
-
-    testcases = [
-        {
-            "one_gene": set(people[3:6]),
-            "two_gene": set(people[6:]),
-            "have_trait": set(people[:5]),
-            "p": randint(1, 100),
-        },
-        {
-            "one_gene": set(people[:3]),
-            "two_gene": set(people[3:6]),
-            "have_trait": set(people[5:]),
-            "p": randint(1, 100),
-        },
-        {
-            "one_gene": set(people[6:]),
-            "two_gene": set(people[:3]),
-            "have_trait": set(people),
-            "p": randint(1, 100),
-        },
-    ]
-
-    for dist in testcases:
-        update(
-            probabilities,
-            dist["one_gene"],
-            dist["two_gene"],
-            dist["have_trait"],
-            dist["p"],
-        )
-
-    pp(probabilities)
-
-    group1 = [probabilities[people[i]]["gene"] for i in range(3)]
-    group2 = [probabilities[people[i]]["gene"] for i in range(3, 6)]
-    group3 = [probabilities[people[i]]["gene"] for i in range(6, 9)]
-    group4 = [probabilities[people[i]]["trait"] for i in range(5)]
-    group5 = [probabilities[people[i]]["trait"] for i in range(5, 9)]
-
-    assert all(item == group1[0] for item in group1)
-    assert all(item == group2[0] for item in group2)
-    assert all(item == group3[0] for item in group3)
-    assert all(item == group4[0] for item in group4)
-    assert all(item == group5[0] for item in group5)
-
-
-def test_has_parent():
-    people = load_data("data/family0.csv")
-
-    expected = {"Harry": True, "James": False, "Lily": False}
-
-    for person in people:
-        assert has_parent(person, people) == expected[person]
-
-
-def test_ways():
-    expected = {0: [(0, 0)], 1: [(0, 1), (1, 0)], 2: [(0, 2), (1, 1), (2, 0)]}
-
-    for gene in range(3):
-        assert [
-            (f, m) for f in range(3) for m in range(3) if f + m == gene
-        ] == expected[gene]
-
-
-def test_get_gene():
-    people = load_data("data/family0.csv")
-
-    expected = {"Harry": 0, "James": 1, "Lily": 2}
-
-    for person in people:
-        assert get_gene(person, {"James"}, {"Lily"}) == expected[person]
+PRECISION = 1e-4
 
 
 def test_family0():
@@ -197,3 +89,43 @@ def test_family2():
     predicted = predict_family(2)
 
     compare(predicted, expected)
+
+
+# Helper functions
+
+
+def predict_family(n):
+    people = load_data(f"data/family{n}.csv")
+
+    probabilities = {
+        person: {"gene": {2: 0, 1: 0, 0: 0}, "trait": {True: 0, False: 0}}
+        for person in people
+    }
+
+    names = set(people)
+    for have_trait in powerset(names):
+        fails_evidence = any(
+            (
+                people[person]["trait"] is not None
+                and people[person]["trait"] != (person in have_trait)
+            )
+            for person in names
+        )
+        if fails_evidence:
+            continue
+
+        for one_gene in powerset(names):
+            for two_genes in powerset(names - one_gene):
+
+                p = joint_probability(people, one_gene, two_genes, have_trait)
+                update(probabilities, one_gene, two_genes, have_trait, p)
+
+    normalize(probabilities)
+
+    return probabilities
+
+
+def compare(predicted, expected):
+    for kPerson, vPerson in predicted.items():
+        for kVariable, vVariable in vPerson.items():
+            assert vVariable == pt.approx(expected[kPerson][kVariable], abs=PRECISION)
