@@ -14,7 +14,7 @@ from minesweeper import Minesweeper, MinesweeperAI
 HEIGHT = 12
 WIDTH = 12
 MINES = 8
-expectedWinPercent = 90
+expectedWinPercent = 85
 
 # Run the AI test for 10 times. Each test consists of letting the AI play
 # minesweeper for 1000 rounds. If the inference function is implemented correctly,
