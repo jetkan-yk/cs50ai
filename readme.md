@@ -6,7 +6,7 @@ This repository contains solutions to the CS50 AI projects. If you intend to tak
 
 ## 🩺 Test Cases
 
-Each project contains a `test.py` and `unit_test.py` file which I've written while solving the problem. Feel free to use it and test your own solutions!
+Each project contains a `test.py` and `unit_test.py` file which I've written while solving the problem. Feel free to use it to test your own solutions!
 
 ## 📖 Table of Contents
 
@@ -40,7 +40,7 @@ I am currently auditing this course (no certificate bearing, just interested in 
 
 This is a self-initiated project. Passing these test cases does not guarantee that you will also receive a full grade from the HavardX teaching team.</br>
 
-If you notice any error in the test cases, or even better, would like to contribute to this repository, please create a new [Issue](https://github.com/jetkan-yk/cs50ai/issues) here.</br> I would greatly appreciate any constructive feedback regarding my code too! ♥️
+If you notice any error in the test cases, or even better, would like to contribute to this repository, please create a new issue [here](https://github.com/jetkan-yk/cs50ai/issues). I would greatly appreciate any constructive feedback regarding my code too! ♥️
 
 ## 💻 My Setup
 
@@ -56,4 +56,4 @@ Each test case should take less than 30 seconds, depending on Python's I/O and y
 
 Retrieved from <https://cs50.harvard.edu/ai/2020/license/>
 
-![image](https://user-images.githubusercontent.com/36299141/128539744-ee267826-82fb-4fd2-831b-9d40413be9dc.png)
+![license](https://user-images.githubusercontent.com/36299141/128539744-ee267826-82fb-4fd2-831b-9d40413be9dc.png)
