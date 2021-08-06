@@ -40,10 +40,7 @@ def crawl(directory):
 
     # Only include links to other pages in the corpus
     for filename in pages:
-        pages[filename] = set(
-            link for link in pages[filename]
-            if link in pages
-        )
+        pages[filename] = set(link for link in pages[filename] if link in pages)
 
     return pages
 
@@ -56,8 +53,27 @@ def transition_model(corpus, page, damping_factor):
     With probability `damping_factor`, choose a link at random
     linked to by `page`. With probability `1 - damping_factor`, choose
     a link at random chosen from all pages in the corpus.
+
+    Case 1:
+        With probability damping_factor, the random surfer should randomly
+        choose one of the links from page with equal probability.
+    Case 2:
+        With probability (1 - damping_factor), the random surfer should
+        randomly choose one of all pages in the corpus with equal probability.
     """
-    raise NotImplementedError
+    # Initialize probability distribution in Case 2
+    probability = {page: (1 - damping_factor) / len(corpus) for page in corpus.keys()}
+
+    neighbors = corpus[page]
+    # If page has no outgoing links, chooses randomly among all pages with equal probability
+    if not neighbors:
+        neighbors = corpus.keys()
+
+    # Sum the probability distribution in Case 1 for each neighbor pages
+    for neighbor in neighbors:
+        probability[neighbor] += damping_factor / len(neighbors)
+
+    return probability
 
 
 def sample_pagerank(corpus, damping_factor, n):
