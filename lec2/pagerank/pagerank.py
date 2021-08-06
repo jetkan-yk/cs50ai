@@ -69,7 +69,7 @@ def transition_model(corpus, page, damping_factor):
     if not neighbors:
         neighbors = corpus.keys()
 
-    # Sum the probability distribution in Case 1 for each neighbor pages
+    # Calculate the probability distribution in Case 1
     for neighbor in neighbors:
         probability[neighbor] += damping_factor / len(neighbors)
 
