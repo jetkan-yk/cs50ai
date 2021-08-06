@@ -21,8 +21,7 @@ Each project contains a `test.py` and `unit_test.py` file which I've written whi
 
 ## 🛠️ How to Run Tests
 
-1. Make sure you have [Python3](https://www.python.org/downloads/) installed in your machine.
-    > My version: `Python 3.9.5`, but anything above `Python 3.4` should work too.
+1. Make sure you have [Python3](https://www.python.org/downloads/) installed in your machine. Anything above `Python 3.4` should work.
 2. Install `pytest` by running `pip install pytest` in a terminal. More information about `pip` [here](https://realpython.com/what-is-pip/).
 3. Make a copy of the test file and paste it in the **same folder** as the project that you want to test.
     > For example, if you want to test your code for `degrees.py`, make a copy of `degrees_test.py` in the **same folder** as your `degrees.py` and other files that came along with the project, like `util.py`, `large/` and `small/`.
@@ -34,3 +33,12 @@ Each project contains a `test.py` and `unit_test.py` file which I've written whi
 - Run `pytest -s` to show print statements in the console
 - Run `pytest -vv` for verbose mode
 - Install `pyrepeat` with `pip` and then run `pytest --count n` to repeat the test for n times
+
+## My system
+
+Each test cases should take about 1~2 seconds, depends on your code efficiency.
+
+- Windows 10 Home Build 19042
+- Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz
+- Python 3.9.5 64-bit
+- Pylance w/ Visual Studio Code (latest release)
