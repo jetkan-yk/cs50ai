@@ -1,8 +1,8 @@
 # CS50's Introduction to Artificial Intelligence with Python
 
-## ‼️ Important
+## ‼️ WARNING ‼️
 
-This repository contains solutions to the CS50 AI projects. If you intend to take this course in the future, please read the [Academic Honesty policy](https://cs50.harvard.edu/ai/2020/honesty/) before viewing the solutions.
+This repository contains solutions to the CS50 AI projects. If you intend to take this course in the future, please read the [Academic Honesty policy](https://cs50.harvard.edu/ai/2020/honesty/) before viewing the solutions. This course has a [**zero-tolerance plagiarism policy**](https://discord.com/channels/393846237255696385/690359206716637184/829384296900853781).
 
 ## 🩺 Test Cases
 
