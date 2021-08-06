@@ -44,7 +44,7 @@ Each test case should take less than 30 seconds, depending on Python's I/O and y
 - Pylance w/ Visual Studio Code (latest release)
 - Code formatter: black
 
-## License
+## 🏛️ License
 
 Retrieved from <https://cs50.harvard.edu/ai/2020/license/>
 
