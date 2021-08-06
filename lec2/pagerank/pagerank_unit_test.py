@@ -1,3 +1,6 @@
+"""
+Unit tests for functions in pagerank.py
+"""
 import pprint as pp
 import random as rd
 
