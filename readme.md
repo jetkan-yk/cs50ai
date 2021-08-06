@@ -25,8 +25,8 @@ Each project contains a `test.py` and `unit_test.py` file which I've written whi
 2. Install `pytest` by running `pip install pytest` in a terminal. More information about `pip` [here](https://realpython.com/what-is-pip/).
 3. Make a copy of the test file and paste it in the **same folder** as the project that you want to test.
     > For example, if you want to test your code for `degrees.py`, make a copy of `degrees_test.py` in the **same folder** as your `degrees.py` and other files that came along with the project, like `util.py`, `large/` and `small/`.
-4. **Navigate** to the project folder and run `pytest` or `pytest <project>_test.py` in a terminal.
-    > For example, **navigate** to `degrees/` and run `pytest` or `pytest degrees_test.py`.
+4. Navigate to the project folder and run `pytest` or `pytest <project>_test.py` in a terminal.
+    > For example, navigate to `degrees/` and run `pytest` or `pytest degrees_test.py`.
 
 ## 🚩 Useful pytest Flags
 
