@@ -36,7 +36,7 @@ Each project contains a `test.py` and `unit_test.py` file which I've written whi
 
 ## 🤹 Improvement
 
-I am currently auditing this course (no certificate bearing, just interested in AI and Brian's teaching style), so more solutions and test cases will be added in the near future.</br>
+I am currently auditing this course (no certificate bearing, just interested in AI and Brian's teaching style), more solutions and test cases will be added in the near future!</br>
 
 This is a self-initiated project. Passing these test cases does not guarantee that you will also receive a full grade from the HavardX teaching team.</br>
 
