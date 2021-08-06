@@ -1,0 +1,46 @@
+{
+	// Place your cs50ai workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"Unit tests file header": {
+		"scope": "python",
+		"prefix": "unittest",
+		"body": [
+			"\"\"\"",
+			"Unit tests for functions in ${1:filename}.py\n",
+			"These tests will only work if your own version of ${1:filename}.py",
+			"also happen to have implemented the same functions as mine!",
+			"Feel free to replace the unit test functions with your version.\n",
+			"'Why do we fall sir? So that we can learn to pick ourselves up.'",
+			"                                        - Batman Begins (2005)",
+			"\"\"\"",
+		],
+		"description": "Insert unit tests file header"
+	},
+	"Regression tests file header": {
+		"scope": "python",
+		"prefix": "regtest",
+		"body": [
+			"\"\"\"",
+			"Regression tests for ${1:filename}.py\n",
+			"Make sure that you placed this file in the same directory as ${1:filename}.py!\n",
+			"'Why do we fall sir? So that we can learn to pick ourselves up.'",
+			"                                        - Batman Begins (2005)",
+			"\"\"\"",
+		],
+		"description": "Insert regression tests file header"
+	}
+}
