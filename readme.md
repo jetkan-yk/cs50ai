@@ -38,6 +38,8 @@ Each project contains a `test.py` and `unit_test.py` file which I've written whi
 
 I am currently auditing this course (no certificate bearing, just interested in AI and Brian's teaching style), so more solutions and test cases will be added in the near future.</br>
 
+This is a self-initiated project. Passing these test cases does not guarantee that you will also receive a full grade from the HavardX teaching team.</br>
+
 If you notice any error in the test cases, or even better, would like to contribute to this repository, please create a new [Issue](https://github.com/jetkan-yk/cs50ai/issues) here.</br> I would greatly appreciate any constructive feedback regarding my code too! ♥️
 
 ## 💻 My Setup
