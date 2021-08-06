@@ -45,6 +45,7 @@ Each test case should take less than 30 seconds, depending on Python's I/O and y
 - Code formatter: black
 
 ## License
-![image](https://user-images.githubusercontent.com/36299141/128539744-ee267826-82fb-4fd2-831b-9d40413be9dc.png)
 
-Retrieved from https://cs50.harvard.edu/ai/2020/license/
+Retrieved from <https://cs50.harvard.edu/ai/2020/license/>
+
+![image](https://user-images.githubusercontent.com/36299141/128539744-ee267826-82fb-4fd2-831b-9d40413be9dc.png)
