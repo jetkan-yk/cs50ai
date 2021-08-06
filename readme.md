@@ -34,6 +34,10 @@ Each project contains a `test.py` and `unit_test.py` file which I've written whi
 - Run `pytest -vv` for verbose mode
 - Install `pyrepeat` with `pip` and then run `pytest --count n` to repeat the test for *n* times
 
+## 🤹 Improvement
+
+I am currently auditing this course (no certificate bearing, just interested in AI and Brian's teaching style), so more solutions and test cases will be added in the near future. If you notice any error in the test cases, or even better, would like to contribute to this repository, please create a new [Issue](https://github.com/jetkan-yk/cs50ai/issues) here. I would greatly appreciate any constructive feedback regarding my code too! ♥️
+
 ## 💻 My Setup
 
 Each test case should take less than 30 seconds, depending on Python's I/O and your code efficiency.
@@ -41,7 +45,7 @@ Each test case should take less than 30 seconds, depending on Python's I/O and y
 - Windows 10 Home Build 19042
 - Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz
 - Python 3.9.5 64-bit
-- Pylance w/ Visual Studio Code (latest release)
+- Visual Studio Code w/Pylance (latest release)
 - Code formatter: black
 
 ## 🏛️ License
