@@ -1,4 +1,7 @@
-from degrees import *
+"""
+Regression tests for degrees.py
+"""
+from degrees import load_data, person_id_for_name, shortest_path
 
 load_data("large")
 
