@@ -6,7 +6,7 @@ This repository contains solutions to the CS50 AI projects. If you intend to tak
 
 ## 🩺 Test Cases
 
-Each project contains a `test.py` and `unit_test.py` file which I've written while solving the problem. Feel free to use it to test your own solutions! The test files are spoiler-free (does not contain solution to the projects).
+Each project contains a `test.py` and `unit_test.py` file which I've written while solving the problem. Feel free to use it to test your own solutions! The test files are _spoiler-free_ (does not contain solution to the projects).
 
 ## 📖 Table of Contents
 
@@ -38,7 +38,7 @@ Each project contains a `test.py` and `unit_test.py` file which I've written whi
 
 I am currently auditing this course (no certificate bearing, just interested in AI and Brian's teaching style), more solutions and test cases will be added in the near future!</br>
 
-This is a self-initiated project. Passing these test cases does not guarantee that you will also receive a full grade from the HavardX teaching team.</br>
+This is a self-initiated project. Passing these test cases **does not** guarantee that you will also receive a full grade from the HavardX teaching team.</br>
 
 If you notice any error in the test cases, or even better, would like to contribute to this repository, please create a new issue [here](https://github.com/jetkan-yk/cs50ai/issues). I would greatly appreciate any constructive feedback regarding my code too! ♥️
 
