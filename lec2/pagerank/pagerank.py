@@ -66,7 +66,7 @@ def transition_model(corpus, page, damping_factor):
     probability = {page: (1 - damping_factor) / len(corpus) for page in corpus.keys()}
 
     neighbors = corpus[page]
-    # If page has no outgoing links, chooses randomly among all pages with equal probability
+    # If page has no outgoing links, choose randomly from all N pages with equal probability
     if not neighbors:
         neighbors = corpus.keys()
 
@@ -77,14 +77,15 @@ def transition_model(corpus, page, damping_factor):
     return probability
 
 
-def normalize(probability):
+def normalize(sample):
     """
-    Update `probability` such that each probability distribution
-    is normalized (i.e., sums to 1, with relative proportions the same).
+    Return a dictionary such that each probability distribution is
+    normalized (i.e., sums to 1, with relative proportions the same).
     """
-    denominator = sum(probability.values())
-    for outcome in probability.keys():
-        probability[outcome] /= denominator
+    total = sum(sample.values())
+    for key in sample.keys():
+        sample[key] /= total
+    return sample
 
 
 def sample_pagerank(corpus, damping_factor, n):
@@ -96,21 +97,19 @@ def sample_pagerank(corpus, damping_factor, n):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    pages = list(corpus.keys())
-    probability = {page: 0 for page in pages}
+    pages = corpus.keys()
+    sample = {page: 0 for page in pages}
 
-    # Surfer starts from a random page
-    surfer = rd.choice(pages)
-    probability[surfer] += 1
+    # Surfer starts sampling from a random page
+    surfer = rd.choice(list(pages))
+    sample[surfer] += 1
     # Sample (n - 1) times
     for _ in range(n - 1):
         model = transition_model(corpus, surfer, damping_factor)
-        surfer = rd.choices(list(model.keys()), list(model.values()))[0]
-        probability[surfer] += 1
+        surfer = rd.choices(list(model.keys()), list(model.values()), k=1)[0]
+        sample[surfer] += 1
 
-    normalize(probability)
-
-    return probability
+    return normalize(sample)
 
 
 def links_to(corpus, page):

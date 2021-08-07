@@ -10,9 +10,10 @@ import random as rd
 
 import pytest as pt
 
-from pagerank import DAMPING, SAMPLES, crawl, iterate_pagerank, sample_pagerank
+from pagerank import DAMPING, crawl, iterate_pagerank, sample_pagerank
 
-PRECISION = 1e-2  # Absolute error tolerance = ±0.01
+TOLERANCE = 1e-2  # Error tolerance = ±0.01 when comparing sample and iterate results
+SAMPLES = 100000  # More samples => better result
 
 corpus0 = crawl("corpus0")
 
@@ -21,19 +22,10 @@ def test_crawl0():
     assert len(corpus0) == 4
 
 
-def test_sample0():
-    expected = {"1.html": 0.2223, "2.html": 0.4303, "3.html": 0.2145, "4.html": 0.1329}
-    sample = sample_pagerank(corpus0, damping_factor=DAMPING, n=SAMPLES)
-    return compare(sample, expected)
-
-
 def test_iterate0():
     expected = {"1.html": 0.2202, "2.html": 0.4289, "3.html": 0.2202, "4.html": 0.1307}
     iterate = iterate_pagerank(corpus0, damping_factor=DAMPING)
     return compare(iterate, expected)
-    # TODO
-    # for key, value in iterate.items():
-    #     assert round(value, 4) == expected[key]
 
 
 @pt.mark.parametrize("execution_number", range(10))
@@ -45,7 +37,7 @@ def test_sample_vs_iterate(execution_number):
 
 
 def checksum(probability):
-    assert sum(probability.values()) == pt.approx(1, abs=PRECISION)
+    assert sum(probability.values()) == pt.approx(1, abs=TOLERANCE)
 
 
 def run_sample_vs_iterate():
@@ -54,15 +46,15 @@ def run_sample_vs_iterate():
     sample = sample_pagerank(corpus, damping_factor=DAMPING, n=SAMPLES)
     iterate = iterate_pagerank(corpus, damping_factor=DAMPING)
 
-    assert checksum(sample)
-    assert checksum(iterate)
+    checksum(sample)
+    checksum(iterate)
 
     return compare(sample, iterate)
 
 
 def compare(prob1, prob2):
     for page in prob1.keys():
-        assert prob1[page] == pt.approx(prob2[page], abs=PRECISION)
+        assert prob1[page] == pt.approx(prob2[page], abs=TOLERANCE)
 
 
 def generate_random_data():
