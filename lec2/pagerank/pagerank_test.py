@@ -18,7 +18,7 @@ PRECISION = 1e-4
 
 @pt.mark.parametrize("execution_number", range(10))
 def test(execution_number):
-    assert run_compare()
+    run_compare()
 
 
 # helper function
@@ -27,7 +27,7 @@ def test(execution_number):
 def run_compare():
     corpus, _ = generate_random_data()
 
-    return sample_pagerank(corpus, damping_factor=DAMPING, n=SAMPLES) == pt.approx(
+    assert sample_pagerank(corpus, damping_factor=DAMPING, n=SAMPLES) == pt.approx(
         iterate_pagerank(corpus, damping_factor=DAMPING), abs=PRECISION
     )
 
