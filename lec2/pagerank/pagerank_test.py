@@ -31,6 +31,9 @@ def test_iterate0():
     expected = {"1.html": 0.2202, "2.html": 0.4289, "3.html": 0.2202, "4.html": 0.1307}
     iterate = iterate_pagerank(corpus0, damping_factor=DAMPING)
     return compare(iterate, expected)
+    # TODO
+    # for key, value in iterate.items():
+    #     assert round(value, 4) == expected[key]
 
 
 @pt.mark.parametrize("execution_number", range(10))
@@ -41,11 +44,18 @@ def test_sample_vs_iterate(execution_number):
 # helper function
 
 
+def checksum(probability):
+    assert sum(probability.values()) == pt.approx(1, abs=PRECISION)
+
+
 def run_sample_vs_iterate():
     corpus, _ = generate_random_data()
 
     sample = sample_pagerank(corpus, damping_factor=DAMPING, n=SAMPLES)
     iterate = iterate_pagerank(corpus, damping_factor=DAMPING)
+
+    assert checksum(sample)
+    assert checksum(iterate)
 
     return compare(sample, iterate)
 
