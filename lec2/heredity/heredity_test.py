@@ -29,7 +29,7 @@ def test_family0():
 
     predicted = predict_family(0)
 
-    compare(predicted, expected)
+    return compare(predicted, expected)
 
 
 def test_family1():
@@ -62,7 +62,7 @@ def test_family1():
 
     predicted = predict_family(1)
 
-    compare(predicted, expected)
+    return compare(predicted, expected)
 
 
 def test_family2():
@@ -91,7 +91,7 @@ def test_family2():
 
     predicted = predict_family(2)
 
-    compare(predicted, expected)
+    return compare(predicted, expected)
 
 
 # Helper functions
