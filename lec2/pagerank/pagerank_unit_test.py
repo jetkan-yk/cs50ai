@@ -11,12 +11,10 @@ Feel free to replace the unit test functions with your version.
 import pprint as pp
 import random as rd
 
-import pytest as pt
-
 from pagerank import DAMPING, transition_model
 from pagerank_test import generate_random_data
 
-PRECISION = 1e-4
+PRECISION = 4
 
 
 def test_transition_model_random():
@@ -31,7 +29,7 @@ def test_transition_model_random():
     print("\nProbability:\n")
     pp.pp(probability)
 
-    assert sum(probability.values()) == pt.approx(1, abs=PRECISION)
+    assert round(sum(probability.values()), PRECISION) == 1
 
 
 def test_transition_model_custom():
@@ -45,7 +43,8 @@ def test_transition_model_custom():
 
     probability = transition_model(corpus, page, DAMPING)
 
-    assert probability == pt.approx(expected, abs=PRECISION)
+    for page in expected:
+        assert round(probability[page], PRECISION) == expected[page]
 
 
 def test_transition_model_no_link():
@@ -59,4 +58,5 @@ def test_transition_model_no_link():
 
     probability = transition_model(corpus, page, DAMPING)
 
-    assert probability == pt.approx(expected, abs=PRECISION)
+    for page in expected:
+        assert round(probability[page], PRECISION) == expected[page]
