@@ -5,6 +5,7 @@ import sys
 
 DAMPING = 0.85
 SAMPLES = 10000
+SIGNIFICANT = 4  # significant decimal points for iterative algorithm
 
 
 def main():
@@ -112,8 +113,38 @@ def sample_pagerank(corpus, damping_factor, n):
     return probability
 
 
-def is_significant(delta):
-    return round(delta, 4) > 0
+def is_significant(delta1, delta2, N, ndigits):
+    """
+    Return true if delta > 0.0001 after rounding
+    """
+    delta = abs(delta1 - delta2) / N
+    return round(delta, ndigits)
+
+
+def links_to(corpus, page):
+    """
+    Return a list of pages that links to the page
+    """
+    links = []
+    for source, targets in corpus.items():
+        if page in targets:
+            links.append(source)
+    return links
+
+
+def predict(probability, corpus, page, damping_factor):
+    """
+    Return the probability[page] using the iterative algorithm
+
+    Case 1:
+        With probability 1 - d, the surfer chose a page at random and ended up on page p.
+    Case 2:
+        With probability d, the surfer followed a link from a page i to page p.
+    """
+    links = links_to(corpus, page)
+    sigma = sum([probability[link] / len(corpus[link]) for link in links])
+
+    return (1 - damping_factor) / len(corpus) + damping_factor * sigma
 
 
 def iterate_pagerank(corpus, damping_factor):
@@ -126,15 +157,18 @@ def iterate_pagerank(corpus, damping_factor):
     PageRank values should sum to 1.
     """
     pages = corpus.keys()
-    probability = {page: 1 / len(pages) for page in pages}
+    probability = {page: 1 / len(corpus) for page in pages}
 
+    curDelta = 0
     while True:
-        totalDelta = 0
+        prevDelta = curDelta
+        curDelta = 0
         for page in pages:
-            delta = predict(probability, page)
-            probability[page] += delta
-            totalDelta += delta
-        if not is_significant(totalDelta):
+            update = predict(probability, corpus, page, damping_factor)
+            probability[page] = update
+            curDelta += update
+        if not is_significant(prevDelta, curDelta, len(corpus), ndigits=SIGNIFICANT):
+            normalize(probability)
             return probability
 
 
