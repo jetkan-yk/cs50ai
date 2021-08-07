@@ -14,17 +14,13 @@ import random as rd
 import pytest as pt
 
 from pagerank import DAMPING, transition_model
+from pagerank_test import generate_random_data
 
 PRECISION = 1e-4
 
 
 def test_transition_model_random():
-    links = [f"{i}.html" for i in range(rd.randint(1, 10))]
-    corpus = {
-        link: set(rd.choices(links, k=rd.randint(0, len(links)))) - set([link])
-        for link in links
-    }
-    page = rd.choice(list(corpus.keys()))
+    corpus, page = generate_random_data()
 
     print("\nRandom corpus:\n")
     pp.pp(corpus)
