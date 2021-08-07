@@ -12,9 +12,7 @@ import pprint as pp
 import random as rd
 
 from pagerank import DAMPING, is_significant, links_to, normalize, transition_model
-from pagerank_test import generate_random_data
-
-PRECISION = 4
+from pagerank_test import checksum, generate_random_data
 
 
 def test_transition_model_random():
@@ -29,7 +27,7 @@ def test_transition_model_random():
     print("\nTransition model:\n")
     pp.pp(probability)
 
-    assert round(sum(probability.values()), PRECISION) == 1
+    return checksum(probability)
 
 
 def test_transition_model_custom():
@@ -44,7 +42,7 @@ def test_transition_model_custom():
     probability = transition_model(corpus, page, damping_factor=DAMPING)
 
     for page in expected:
-        assert round(probability[page], PRECISION) == expected[page]
+        assert round(probability[page], 4) == expected[page]
 
 
 def test_transition_model_no_link():
@@ -59,7 +57,7 @@ def test_transition_model_no_link():
     probability = transition_model(corpus, page, damping_factor=DAMPING)
 
     for page in expected:
-        assert round(probability[page], PRECISION) == expected[page]
+        assert round(probability[page], 4) == expected[page]
 
 
 def test_normalize():
@@ -75,7 +73,7 @@ def test_normalize():
     print("\nAfter normalizing...\n")
     pp.pp(probability)
 
-    assert round(sum(probability.values()), PRECISION) == 1
+    return checksum(probability)
 
 
 def test_is_significant():
