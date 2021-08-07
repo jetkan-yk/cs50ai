@@ -33,8 +33,6 @@ def test_has_parent():
 
 
 def test_normalize():
-    print("\n\n======================== Testing normalize() ========================\n")
-
     people = [f"Person{n}" for n in range(rd.randint(0, 10))]
 
     probabilities = {
@@ -45,7 +43,7 @@ def test_normalize():
         for person in people
     }
 
-    print("Before normalize:")
+    print("\nBefore normalize:")
     pp.pp(probabilities)
 
     normalize(probabilities)
@@ -59,8 +57,6 @@ def test_normalize():
 
 
 def test_update():
-    print("\n\n======================== Testing update() ========================\n")
-
     people = [f"Person{n}" for n in range(9)]
 
     probabilities = {
