@@ -54,13 +54,6 @@ def transition_model(corpus, page, damping_factor):
     With probability `damping_factor`, choose a link at random
     linked to by `page`. With probability `1 - damping_factor`, choose
     a link at random chosen from all pages in the corpus.
-
-    Case 1:
-        With probability damping_factor, the random surfer should randomly
-        choose one of the links from page with equal probability.
-    Case 2:
-        With probability (1 - damping_factor), the random surfer should
-        randomly choose one of all pages in the corpus with equal probability.
     """
     # Initialize probability distribution in Case 2
     probability = {page: (1 - damping_factor) / len(corpus) for page in corpus.keys()}
@@ -100,13 +93,13 @@ def sample_pagerank(corpus, damping_factor, n):
     pages = corpus.keys()
     sample = {page: 0 for page in pages}
 
-    # Surfer starts sampling from a random page
-    surfer = rd.choice(list(pages))
-    sample[surfer] += 1
-    # Sample (n - 1) times
-    for _ in range(n - 1):
-        model = transition_model(corpus, surfer, damping_factor)
-        surfer = rd.choices(list(model.keys()), list(model.values()), k=1)[0]
+    for i in range(n):
+        if i == 0:
+            # Start sampling from a random page
+            surfer = rd.choice(list(pages))
+        else:
+            model = transition_model(corpus, surfer, damping_factor)
+            surfer = rd.choices(list(model.keys()), list(model.values()), k=1)[0]
         sample[surfer] += 1
 
     return normalize(sample)
