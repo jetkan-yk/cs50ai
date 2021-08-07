@@ -11,7 +11,7 @@ Feel free to replace the unit test functions with your version.
 import pprint as pp
 import random as rd
 
-from pagerank import DAMPING, is_significant, links_to, normalize, transition_model
+from pagerank import DAMPING, has_changes, links_to, normalize, transition_model
 from pagerank_test import checksum, generate_random_data
 
 
@@ -76,17 +76,14 @@ def test_normalize():
     return checksum(probability)
 
 
-def test_is_significant():
-    assert is_significant(0, 1.5)
-    assert is_significant(0, 1)
-    assert is_significant(0, 1e-1)
-    assert is_significant(0, 1e-2)
-    assert not is_significant(0, 1e-3)
-    assert not is_significant(0, 1e-4)
-    assert not is_significant(0, 9e-5)
-    assert not is_significant(0, 1e-5)
-    assert not is_significant(0, 1e-6)
-    assert not is_significant(0, 0)
+def test_has_changes():
+    assert has_changes(0, 1.5)
+    assert has_changes(0, 1)
+    assert has_changes(0, 1e-1)
+    assert has_changes(0, 1e-2)
+    assert not has_changes(0, 1e-3)
+    assert not has_changes(0, 1e-4)
+    assert not has_changes(0, 0)
 
 
 def test_links_to():

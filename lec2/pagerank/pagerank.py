@@ -5,7 +5,7 @@ import sys
 
 DAMPING = 0.85
 SAMPLES = 10000
-SIGNIFICANT = 0.001  # significant decimal points for iterative algorithm
+THRESHOLD = 0.001  # pageRank changes must be > threshold to be effective
 
 
 def main():
@@ -113,13 +113,6 @@ def sample_pagerank(corpus, damping_factor, n):
     return probability
 
 
-def is_significant(value1, value2):
-    """
-    Return true if delta > 0.001
-    """
-    return abs(value1 - value2) > SIGNIFICANT
-
-
 def links_to(corpus, page):
     """
     Return a list of pages that links to the page
@@ -131,23 +124,25 @@ def links_to(corpus, page):
     return links
 
 
-def predict(probability, corpus, page, damping_factor):
+def calculate(pageRank, corpus, page, damping_factor):
     """
-    Return the probability[page] using the iterative algorithm
-
-    Case 1:
-        With probability 1 - d, the surfer chose a page at random and ended up on page p.
-    Case 2:
-        With probability d, the surfer followed a link from a page i to page p.
+    Calculate the pageRank[page] using the iterative algorithm
     """
     N = len(corpus)
-    links = links_to(corpus, page)
     sigma = 0
-    for link in links:
+    for link in links_to(corpus, page):
+        # If the source page has no link, assume it can visit all N pages
         numLinks = N if not corpus[link] else len(corpus[link])
-        sigma += probability[link] / numLinks
+        sigma += pageRank[link] / numLinks
 
     return (1 - damping_factor) / N + damping_factor * sigma
+
+
+def has_changes(value1, value2):
+    """
+    Return true if delta > THRESHOLD
+    """
+    return abs(value1 - value2) > THRESHOLD
 
 
 def iterate_pagerank(corpus, damping_factor):
@@ -160,18 +155,19 @@ def iterate_pagerank(corpus, damping_factor):
     PageRank values should sum to 1.
     """
     pages = corpus.keys()
-    probability = {page: 1 / len(pages) for page in pages}
+    pageRank = {page: 1 / len(pages) for page in pages}
 
     while True:
-        has_changes = []
+        changelogs = []
 
-        prevIter = probability.copy()
+        prevRank = pageRank.copy()
         for page in pages:
-            probability[page] = predict(prevIter, corpus, page, damping_factor)
-            has_changes.append(is_significant(prevIter[page], probability[page]))
+            pageRank[page] = calculate(prevRank, corpus, page, damping_factor)
+            changelogs.append(has_changes(prevRank[page], pageRank[page]))
 
-        if all(not change for change in has_changes):
-            return probability
+        # Repeat until no PageRank value changes by more than 0.001
+        if all(not change for change in changelogs):
+            return pageRank
 
 
 if __name__ == "__main__":
