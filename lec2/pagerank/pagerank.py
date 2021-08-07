@@ -160,19 +160,17 @@ def iterate_pagerank(corpus, damping_factor):
     PageRank values should sum to 1.
     """
     pages = corpus.keys()
-    probability = {page: 1 / len(corpus) for page in pages}
+    probability = {page: 1 / len(pages) for page in pages}
 
     while True:
         has_changes = []
 
+        prevIter = probability.copy()
         for page in pages:
-            oldValue = probability[page]
-            newValue = predict(probability, corpus, page, damping_factor)
-            probability[page] = newValue
-            has_changes.append(is_significant(oldValue, newValue))
+            probability[page] = predict(prevIter, corpus, page, damping_factor)
+            has_changes.append(is_significant(prevIter[page], probability[page]))
 
         if all(not change for change in has_changes):
-            normalize(probability)
             return probability
 
 
