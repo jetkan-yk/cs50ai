@@ -112,6 +112,10 @@ def sample_pagerank(corpus, damping_factor, n):
     return probability
 
 
+def is_significant(delta):
+    return round(delta, 4) > 0
+
+
 def iterate_pagerank(corpus, damping_factor):
     """
     Return PageRank values for each page by iteratively updating
@@ -121,8 +125,17 @@ def iterate_pagerank(corpus, damping_factor):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    raise NotImplementedError
-    # return sample_pagerank(corpus, damping_factor, n=SAMPLES)
+    pages = corpus.keys()
+    probability = {page: 1 / len(pages) for page in pages}
+
+    while True:
+        totalDelta = 0
+        for page in pages:
+            delta = predict(probability, page)
+            probability[page] += delta
+            totalDelta += delta
+        if not is_significant(totalDelta):
+            return probability
 
 
 if __name__ == "__main__":

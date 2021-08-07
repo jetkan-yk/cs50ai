@@ -11,26 +11,10 @@ Feel free to replace the unit test functions with your version.
 import pprint as pp
 import random as rd
 
-from pagerank import DAMPING, normalize, transition_model
+from pagerank import DAMPING, is_significant, normalize, transition_model
 from pagerank_test import generate_random_data
 
 PRECISION = 4
-
-
-def test_normalize():
-    corpus, _ = generate_random_data()
-
-    probability = {page: rd.random() for page in corpus.keys()}
-
-    print("\nBefore normalizing...\n")
-    pp.pp(probability)
-
-    normalize(probability)
-
-    print("\nAfter normalizing...\n")
-    pp.pp(probability)
-
-    assert round(sum(probability.values()), PRECISION) == 1
 
 
 def test_transition_model_random():
@@ -76,3 +60,33 @@ def test_transition_model_no_link():
 
     for page in expected:
         assert round(probability[page], PRECISION) == expected[page]
+
+
+def test_normalize():
+    corpus, _ = generate_random_data()
+
+    probability = {page: rd.random() for page in corpus.keys()}
+
+    print("\nBefore normalizing...\n")
+    pp.pp(probability)
+
+    normalize(probability)
+
+    print("\nAfter normalizing...\n")
+    pp.pp(probability)
+
+    assert round(sum(probability.values()), PRECISION) == 1
+
+
+def test_is_significant():
+    assert is_significant(rd.randint(2, 10))
+    assert is_significant(1.5)
+    assert is_significant(1)
+    assert is_significant(1e-1)
+    assert is_significant(1e-2)
+    assert is_significant(1e-3)
+    assert is_significant(1e-4)
+    assert is_significant(5e-5)
+    assert not is_significant(4e-5)
+    assert not is_significant(1e-6)
+    assert not is_significant(0)
