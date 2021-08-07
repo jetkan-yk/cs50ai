@@ -95,10 +95,17 @@ def sample_pagerank(corpus, damping_factor, n):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    pages = corpus.key()
-    probability = {0 for page in pages}
+    pages = list(corpus.keys())
+    probability = {page: 0 for page in pages}
 
+    # Surfer starts from a random page
     surfer = rd.choice(pages)
+    probability[surfer] += 1
+    # Sample (n - 1) times
+    for _ in range(n - 1):
+        model = transition_model(corpus, surfer, damping_factor)
+        surfer = rd.choices(list(model.keys()), list(model.values()))[0]
+        probability[surfer] += 1
 
     normalize(probability)
 
@@ -115,6 +122,7 @@ def iterate_pagerank(corpus, damping_factor):
     PageRank values should sum to 1.
     """
     raise NotImplementedError
+    # return sample_pagerank(corpus, damping_factor, n=SAMPLES)
 
 
 if __name__ == "__main__":
