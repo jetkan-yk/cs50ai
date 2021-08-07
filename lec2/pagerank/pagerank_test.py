@@ -12,7 +12,7 @@ import pytest as pt
 
 from pagerank import DAMPING, SAMPLES, crawl, iterate_pagerank, sample_pagerank
 
-PRECISION = 2e-2  # Absolute error tolerance = ±0.02
+PRECISION = 1e-2  # Absolute error tolerance = ±0.01
 
 corpus0 = crawl("corpus0")
 
