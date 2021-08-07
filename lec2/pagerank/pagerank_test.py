@@ -6,14 +6,13 @@ Make sure that this file is in the same directory as pagerank.py!
 'Why do we fall sir? So that we can learn to pick ourselves up.'
                                         - Batman Begins (2005)
 """
-
 import random as rd
 
 import pytest as pt
 
 from pagerank import DAMPING, SAMPLES, iterate_pagerank, sample_pagerank
 
-PRECISION = 1e-4
+PRECISION = 4
 
 
 @pt.mark.parametrize("execution_number", range(10))
@@ -27,9 +26,11 @@ def test(execution_number):
 def run_compare():
     corpus, _ = generate_random_data()
 
-    assert sample_pagerank(corpus, damping_factor=DAMPING, n=SAMPLES) == pt.approx(
-        iterate_pagerank(corpus, damping_factor=DAMPING), abs=PRECISION
-    )
+    sample = sample_pagerank(corpus, damping_factor=DAMPING, n=SAMPLES)
+    iterate = iterate_pagerank(corpus, damping_factor=DAMPING)
+
+    for page in corpus.keys():
+        assert round(sample[page], PRECISION) == round(iterate[page], PRECISION)
 
 
 def generate_random_data():
