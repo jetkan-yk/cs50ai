@@ -115,9 +115,9 @@ def sample_pagerank(corpus, damping_factor, n):
 
 def is_significant(value1, value2):
     """
-    Return true if delta > 0.0001
+    Return true if delta > 0.001
     """
-    return abs(value1 - value2) >= SIGNIFICANT
+    return abs(value1 - value2) > SIGNIFICANT
 
 
 def links_to(corpus, page):
@@ -126,7 +126,7 @@ def links_to(corpus, page):
     """
     links = []
     for source, targets in corpus.items():
-        if page in targets:
+        if not targets or page in targets:
             links.append(source)
     return links
 
@@ -140,10 +140,14 @@ def predict(probability, corpus, page, damping_factor):
     Case 2:
         With probability d, the surfer followed a link from a page i to page p.
     """
+    N = len(corpus)
     links = links_to(corpus, page)
-    sigma = sum([probability[link] / len(corpus[link]) for link in links])
+    sigma = 0
+    for link in links:
+        numLinks = N if not corpus[link] else len(corpus[link])
+        sigma += probability[link] / numLinks
 
-    return (1 - damping_factor) / len(corpus) + damping_factor * sigma
+    return (1 - damping_factor) / N + damping_factor * sigma
 
 
 def iterate_pagerank(corpus, damping_factor):
@@ -168,6 +172,7 @@ def iterate_pagerank(corpus, damping_factor):
             has_changes.append(is_significant(oldValue, newValue))
 
         if all(not change for change in has_changes):
+            normalize(probability)
             return probability
 
 
