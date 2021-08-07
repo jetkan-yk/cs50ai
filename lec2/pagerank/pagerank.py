@@ -1,5 +1,5 @@
 import os
-import random
+import random as rd
 import re
 import sys
 
@@ -76,6 +76,16 @@ def transition_model(corpus, page, damping_factor):
     return probability
 
 
+def normalize(probability):
+    """
+    Update `probability` such that each probability distribution
+    is normalized (i.e., sums to 1, with relative proportions the same).
+    """
+    denominator = sum(probability.values())
+    for outcome in probability.keys():
+        probability[outcome] /= denominator
+
+
 def sample_pagerank(corpus, damping_factor, n):
     """
     Return PageRank values for each page by sampling `n` pages
@@ -85,7 +95,14 @@ def sample_pagerank(corpus, damping_factor, n):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    raise NotImplementedError
+    pages = corpus.key()
+    probability = {0 for page in pages}
+
+    surfer = rd.choice(pages)
+
+    normalize(probability)
+
+    return probability
 
 
 def iterate_pagerank(corpus, damping_factor):

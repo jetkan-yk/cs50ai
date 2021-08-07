@@ -11,10 +11,26 @@ Feel free to replace the unit test functions with your version.
 import pprint as pp
 import random as rd
 
-from pagerank import DAMPING, transition_model
+from pagerank import DAMPING, normalize, transition_model
 from pagerank_test import generate_random_data
 
 PRECISION = 4
+
+
+def test_normalize():
+    corpus, _ = generate_random_data()
+
+    probability = {page: rd.random() for page in corpus.keys()}
+
+    print("\nBefore normalizing...\n")
+    pp.pp(probability)
+
+    normalize(probability)
+
+    print("\nAfter normalizing...\n")
+    pp.pp(probability)
+
+    assert round(sum(probability.values()), PRECISION) == 1
 
 
 def test_transition_model_random():
@@ -24,9 +40,9 @@ def test_transition_model_random():
     pp.pp(corpus)
     print("\nRandom page:", page)
 
-    probability = transition_model(corpus, page, rd.random())
+    probability = transition_model(corpus, page, damping_factor=rd.random())
 
-    print("\nProbability:\n")
+    print("\nTransition model:\n")
     pp.pp(probability)
 
     assert round(sum(probability.values()), PRECISION) == 1
@@ -41,7 +57,7 @@ def test_transition_model_custom():
     page = "1.html"
     expected = {"1.html": 0.05, "2.html": 0.475, "3.html": 0.475}
 
-    probability = transition_model(corpus, page, DAMPING)
+    probability = transition_model(corpus, page, damping_factor=DAMPING)
 
     for page in expected:
         assert round(probability[page], PRECISION) == expected[page]
@@ -56,7 +72,7 @@ def test_transition_model_no_link():
     page = rd.choice(list(corpus.keys()))
     expected = {"1.html": 0.3333, "2.html": 0.3333, "3.html": 0.3333}
 
-    probability = transition_model(corpus, page, DAMPING)
+    probability = transition_model(corpus, page, damping_factor=DAMPING)
 
     for page in expected:
         assert round(probability[page], PRECISION) == expected[page]
