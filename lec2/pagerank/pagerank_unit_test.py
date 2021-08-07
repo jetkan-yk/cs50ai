@@ -11,7 +11,7 @@ Feel free to replace the unit test functions with your version.
 import pprint as pp
 import random as rd
 
-from pagerank import DAMPING, is_significant, normalize, transition_model
+from pagerank import DAMPING, is_significant, links_to, normalize, transition_model
 from pagerank_test import generate_random_data
 
 PRECISION = 4
@@ -79,14 +79,21 @@ def test_normalize():
 
 
 def test_is_significant():
-    assert is_significant(rd.randint(2, 10))
-    assert is_significant(1.5)
-    assert is_significant(1)
-    assert is_significant(1e-1)
-    assert is_significant(1e-2)
-    assert is_significant(1e-3)
-    assert is_significant(1e-4)
-    assert is_significant(5e-5)
-    assert not is_significant(4e-5)
-    assert not is_significant(1e-6)
-    assert not is_significant(0)
+    assert is_significant(0, 1.5, 1, 4)
+    assert is_significant(0, 1, 1, 4)
+    assert is_significant(0, 1e-1, 1, 4)
+    assert is_significant(0, 1e-2, 1, 4)
+    assert is_significant(0, 1e-3, 1, 4)
+    assert is_significant(0, 1e-4, 1, 4)
+    assert is_significant(0, 5e-5, 1, 4)
+    assert not is_significant(0, 4e-5, 1, 4)
+    assert not is_significant(0, 1e-6, 1, 4)
+    assert not is_significant(0, 0, 1, 4)
+
+
+def test_links_to():
+    corpus, page = generate_random_data()
+    links = links_to(corpus, page)
+
+    for link in links:
+        assert page in corpus[link]
