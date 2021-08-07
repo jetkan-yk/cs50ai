@@ -157,16 +157,14 @@ def iterate_pagerank(corpus, damping_factor):
     pageRank = {page: 1 / len(pages) for page in pages}
 
     while True:
-        changelogs = []
-
         prevRank = pageRank.copy()
         for page in pages:
             pageRank[page] = calculate(prevRank, corpus, page, damping_factor)
-            changelogs.append(has_changes(prevRank[page], pageRank[page]))
 
-        # Repeat until no PageRank value changes by more than 0.001
-        if all(not change for change in changelogs):
-            return pageRank
+        # Repeat if at least 1 PageRank value changed
+        if any(has_changes(prevRank[page], pageRank[page]) for page in pages):
+            continue
+        return pageRank
 
 
 if __name__ == "__main__":
