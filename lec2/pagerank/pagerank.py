@@ -5,7 +5,7 @@ import sys
 
 DAMPING = 0.85
 SAMPLES = 10000
-SIGNIFICANT = 4  # significant decimal points for iterative algorithm
+SIGNIFICANT = 0.001  # significant decimal points for iterative algorithm
 
 
 def main():
@@ -113,12 +113,11 @@ def sample_pagerank(corpus, damping_factor, n):
     return probability
 
 
-def is_significant(delta1, delta2, N, ndigits):
+def is_significant(value1, value2):
     """
-    Return true if delta > 0.0001 after rounding
+    Return true if delta > 0.0001
     """
-    delta = abs(delta1 - delta2) / N
-    return round(delta, ndigits)
+    return abs(value1 - value2) >= SIGNIFICANT
 
 
 def links_to(corpus, page):
@@ -159,16 +158,16 @@ def iterate_pagerank(corpus, damping_factor):
     pages = corpus.keys()
     probability = {page: 1 / len(corpus) for page in pages}
 
-    curDelta = 0
     while True:
-        prevDelta = curDelta
-        curDelta = 0
+        has_changes = []
+
         for page in pages:
-            update = predict(probability, corpus, page, damping_factor)
-            probability[page] = update
-            curDelta += update
-        if not is_significant(prevDelta, curDelta, len(corpus), ndigits=SIGNIFICANT):
-            normalize(probability)
+            oldValue = probability[page]
+            newValue = predict(probability, corpus, page, damping_factor)
+            probability[page] = newValue
+            has_changes.append(is_significant(oldValue, newValue))
+
+        if all(not change for change in has_changes):
             return probability
 
 

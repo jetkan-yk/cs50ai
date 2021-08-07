@@ -79,16 +79,16 @@ def test_normalize():
 
 
 def test_is_significant():
-    assert is_significant(0, 1.5, 1, 4)
-    assert is_significant(0, 1, 1, 4)
-    assert is_significant(0, 1e-1, 1, 4)
-    assert is_significant(0, 1e-2, 1, 4)
-    assert is_significant(0, 1e-3, 1, 4)
-    assert is_significant(0, 1e-4, 1, 4)
-    assert is_significant(0, 5e-5, 1, 4)
-    assert not is_significant(0, 4e-5, 1, 4)
-    assert not is_significant(0, 1e-6, 1, 4)
-    assert not is_significant(0, 0, 1, 4)
+    assert is_significant(0, 1.5)
+    assert is_significant(0, 1)
+    assert is_significant(0, 1e-1)
+    assert is_significant(0, 1e-2)
+    assert is_significant(0, 1e-3)
+    assert is_significant(0, 1e-4)
+    assert not is_significant(0, 9e-5)
+    assert not is_significant(0, 1e-5)
+    assert not is_significant(0, 1e-6)
+    assert not is_significant(0, 0)
 
 
 def test_links_to():
