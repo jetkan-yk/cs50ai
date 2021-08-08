@@ -6,7 +6,7 @@ This repository contains solutions to the CS50 AI projects. If you intend to tak
 
 ## 🩺 Test Cases
 
-Each project contains a `test.py` and `unit_test.py` file which I've written while solving the problem. Feel free to use it to test your own solutions! The test files are _spoiler-free_ (does not contain solution to the projects).
+Each project contains a `test.py` and a `unit_test.py` file which I've written while solving the problem. Feel free to use it to test your own solutions! The `test.py` files are _spoiler-free_ (does not contain solution to the projects).
 
 ## 📖 Table of Contents
 
@@ -20,6 +20,8 @@ Each project contains a `test.py` and `unit_test.py` file which I've written whi
 | [2](https://cs50.harvard.edu/ai/2020/weeks/2/) | [Uncertainty](https://youtu.be/D8RRq3TbtHU) | [Markov Models](https://cs50.harvard.edu/ai/2020/notes/2/#markov-models)                 | [PageRank](lec2/pagerank/pagerank.py)          | [Write an AI to rank web pages by importance.](https://cs50.harvard.edu/ai/2020/projects/2/pagerank/)                                             | [pagerank_test.py](lec2/pagerank/pagerank_test.py)          |
 
 ## 🛠️ How to Run Tests
+
+### Guide
 
 1. Make sure you have [Python3](https://www.python.org/downloads/) installed in your machine. Anything above `Python 3.4` should work.
 2. Install `pytest` by running `pip install pytest` in a terminal. More information about `pip` [here](https://realpython.com/what-is-pip/).
