@@ -8,14 +8,17 @@ Feel free to replace the unit test functions with your version.
 'Why do we fall sir? So that we can learn to pick ourselves up.'
                                         - Batman Begins (2005)
 """
+import pytest
 import random
 
 from crossword import Crossword
 from generate import CrosswordCreator
 
 
-def test_enforce_node_consistency():
-    crossword = generate_random_crossword()
+@pytest.mark.parametrize("i", range(3))
+@pytest.mark.parametrize("j", range(3))
+def test_enforce_node_consistency(i, j):
+    crossword = generate_crossword(i, j)
     creator = CrosswordCreator(crossword)
 
     creator.enforce_node_consistency()
@@ -25,8 +28,10 @@ def test_enforce_node_consistency():
             assert len(value) == var.length
 
 
-def test_revise_and_conflict():
-    crossword = generate_crossword(0, 0)
+@pytest.mark.parametrize("i", range(3))
+@pytest.mark.parametrize("j", range(3))
+def test_revise_and_conflict(i, j):
+    crossword = generate_crossword(i, j)
     creator = CrosswordCreator(crossword)
 
     creator.enforce_node_consistency()
@@ -46,6 +51,19 @@ def test_revise_and_conflict():
                 assert oldDomain == creator.domains[x]
 
 
+@pytest.mark.parametrize("i", range(3))
+@pytest.mark.parametrize("j", range(3))
+def test_ac3(i, j):
+    crossword = generate_crossword(i, j)
+    creator = CrosswordCreator(crossword)
+
+    creator.enforce_node_consistency()
+    if (i, j) not in [(1, 0), (2, 0)]:
+        assert creator.ac3()
+    else:
+        assert not creator.ac3()
+
+
 def test_assignment_complete():
     crossword = generate_random_crossword()
     creator = CrosswordCreator(crossword)
@@ -61,7 +79,6 @@ def test_assignment_complete():
     random_var = random.choice(list(complete_assignment.keys()))
     incomplete_assignment = complete_assignment.copy()
     incomplete_assignment[random_var] = None
-    print(random_var, ":", incomplete_assignment[random_var])
     assert creator.assignment_complete(incomplete_assignment) is False
 
 
@@ -71,7 +88,6 @@ def test_assignment_complete():
 def assert_conflict(overlap, valueX, valueY):
     assert overlap is not None
     (i, j) = overlap
-    print(valueX[i], "!=", valueY[j])
     assert valueX[i] != valueY[j]
 
 

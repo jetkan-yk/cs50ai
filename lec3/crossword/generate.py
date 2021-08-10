@@ -1,3 +1,4 @@
+import collections
 import sys
 
 from crossword import *
@@ -142,7 +143,20 @@ class CrosswordCreator:
         Return True if arc consistency is enforced and no domains are empty;
         return False if one or more domains end up empty.
         """
-        raise NotImplementedError
+        if arcs is None:
+            overlaps = self.crossword.overlaps.items()
+            arcs = [k for k, v in overlaps if v is not None]
+
+        queue = collections.deque(arcs)
+
+        while queue:
+            (x, y) = queue.popleft()
+            if self.revise(x, y):
+                if not self.domains[x]:
+                    return False
+                for z in self.crossword.neighbors(x) - {y}:
+                    queue.append((z, x))
+        return True
 
     def assignment_complete(self, assignment):
         """
