@@ -100,9 +100,12 @@ class CrosswordCreator:
         """
         Update `self.domains` such that each variable is node-consistent.
         (Remove any values that are inconsistent with a variable's unary
-         constraints; in this case, the length of the word.)
+        constraints; in this case, the length of the word.)
         """
-        raise NotImplementedError
+        for var, values in self.domains.items():
+            self.domains[var] = set(
+                filter(lambda value: len(value) == var.length, values)
+            )
 
     def revise(self, x, y):
         """
