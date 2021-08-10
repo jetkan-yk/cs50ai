@@ -8,7 +8,6 @@ Feel free to replace the unit test functions with your version.
 'Why do we fall sir? So that we can learn to pick ourselves up.'
                                         - Batman Begins (2005)
 """
-import copy
 import random
 
 from crossword import Crossword
@@ -36,7 +35,7 @@ def test_revise_and_conflict():
         for y in crossword.variables:
             if x == y:
                 continue
-            oldDomain = copy.deepcopy(creator.domains[x])
+            oldDomain = creator.domains[x].copy()
             if creator.revise(x, y):
                 removed = oldDomain - creator.domains[x]
                 for valueX in removed:
