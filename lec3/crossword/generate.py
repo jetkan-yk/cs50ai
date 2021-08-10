@@ -107,6 +107,13 @@ class CrosswordCreator:
                 filter(lambda value: len(value) == var.length, values)
             )
 
+    def conflict(self, x, y, valueX, valueY):
+        """
+        Return True if x = valueX and y = valueY has conflict
+        """
+        (i, j) = self.crossword.overlaps(x, y)
+        return valueX[i] != valueY[j]
+
     def revise(self, x, y):
         """
         Make variable `x` arc consistent with variable `y`.
