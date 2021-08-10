@@ -111,7 +111,10 @@ class CrosswordCreator:
         """
         Return True if x = valueX and y = valueY has conflict
         """
-        (i, j) = self.crossword.overlaps(x, y)
+        overlap = self.crossword.overlaps[x, y]
+        if overlap is None:
+            return False
+        (i, j) = overlap
         return valueX[i] != valueY[j]
 
     def revise(self, x, y):
@@ -123,7 +126,14 @@ class CrosswordCreator:
         Return True if a revision was made to the domain of `x`; return
         False if no revision was made.
         """
-        raise NotImplementedError
+        revised = False
+        # for x in X.domain
+        for valueX in self.domains[x].copy():
+            # if all y in Y.domain conflicts with valueX
+            if all(self.conflict(x, y, valueX, valueY) for valueY in self.domains[y]):
+                self.domains[x].remove(valueX)
+                revised = True
+        return revised
 
     def ac3(self, arcs=None):
         """
