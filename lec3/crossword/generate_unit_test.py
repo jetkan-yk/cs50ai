@@ -9,7 +9,7 @@ Feel free to replace the unit test functions with your version.
                                         - Batman Begins (2005)
 """
 import copy
-import random as rd
+import random
 
 from crossword import Crossword
 from generate import CrosswordCreator
@@ -27,8 +27,7 @@ def test_enforce_node_consistency():
 
 
 def test_revise_and_conflict():
-    # TODO: replace with selected input
-    crossword = generate_random_crossword()
+    crossword = generate_crossword(0, 0)
     creator = CrosswordCreator(crossword)
 
     creator.enforce_node_consistency()
@@ -39,11 +38,11 @@ def test_revise_and_conflict():
                 continue
             oldDomain = copy.deepcopy(creator.domains[x])
             if creator.revise(x, y):
-                newDomain = creator.domains[x]
-                removed = oldDomain - newDomain
+                removed = oldDomain - creator.domains[x]
                 for valueX in removed:
                     for valueY in creator.domains[y]:
-                        assert_conflict(creator, x, y, valueX, valueY)
+                        overlap = crossword.overlaps[x, y]
+                        assert_conflict(overlap, valueX, valueY)
             else:
                 assert oldDomain == creator.domains[x]
 
@@ -51,20 +50,21 @@ def test_revise_and_conflict():
 # helper function
 
 
-def assert_conflict(creator, x, y, valueX, valueY):
-    overlap = creator.crossword.overlaps[x, y]
+def assert_conflict(overlap, valueX, valueY):
     assert overlap is not None
     (i, j) = overlap
     print(valueX[i], "!=", valueY[j])
     assert valueX[i] != valueY[j]
 
 
-def generate_random_crossword():
-    i = rd.randint(0, 2)
-    j = rd.randint(0, 2)
+def generate_crossword(i, j):
     structure = f"data/structure{i}.txt"
     words = f"data/words{j}.txt"
-
-    print(f"\ntesting structure{i} words{j}")
-
+    print(f"\nTesting structure{i} words{j}")
     return Crossword(structure, words)
+
+
+def generate_random_crossword():
+    i = random.randint(0, 2)
+    j = random.randint(0, 2)
+    return generate_crossword(i, j)
