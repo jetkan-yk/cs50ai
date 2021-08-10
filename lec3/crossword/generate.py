@@ -208,6 +208,16 @@ class CrosswordCreator:
             if var not in assignment.keys():
                 return var
 
+    def maintain_arc_consistency(self, x):
+        """
+        Draw inference from assignment of variable x. Returns True if arc
+        consistency is enforced and no domain is empty, False otherwise.
+        """
+        arcs = []
+        for y in self.crossword.neighbors(x):
+            arcs.append((y, x))
+        return self.ac3(arcs)
+
     def backtrack(self, assignment):
         """
         Using Backtracking Search, take as input a partial assignment for the
@@ -217,7 +227,24 @@ class CrosswordCreator:
 
         If no assignment is possible, return None.
         """
-        raise NotImplementedError
+        if self.assignment_complete(assignment):
+            return assignment
+
+        var = self.select_unassigned_variable(assignment)
+
+        for value in self.order_domain_values(var, assignment):
+            backtrackAssignment = assignment.copy()
+            assignment[var] = value
+            # If assignment and inferences are consistent
+            if self.consistent(assignment) and self.maintain_arc_consistency(var):
+                # Explore further
+                result = self.backtrack(assignment)
+                # Valid result found
+                if result is not None:
+                    return result
+            # No result, backtrack assignment and inferences
+            assignment = backtrackAssignment
+        return None
 
 
 def main():

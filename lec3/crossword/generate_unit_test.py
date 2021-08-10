@@ -153,6 +153,11 @@ def test_select_unassigned_variable(i, j):
     assert var != creator.select_unassigned_variable({var: word})
 
 
+def test_maintain_arc_consistency():
+    # TODO
+    assert True
+
+
 # helper function
 
 
