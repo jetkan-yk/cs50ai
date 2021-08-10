@@ -46,6 +46,25 @@ def test_revise_and_conflict():
                 assert oldDomain == creator.domains[x]
 
 
+def test_assignment_complete():
+    crossword = generate_random_crossword()
+    creator = CrosswordCreator(crossword)
+
+    empty_assignment = dict()
+    assert creator.assignment_complete(empty_assignment) is False
+
+    complete_assignment = {
+        var: random.choice(list(crossword.words)) for var in crossword.variables
+    }
+    assert creator.assignment_complete(complete_assignment) is True
+
+    random_var = random.choice(list(complete_assignment.keys()))
+    incomplete_assignment = complete_assignment.copy()
+    incomplete_assignment[random_var] = None
+    print(random_var, ":", incomplete_assignment[random_var])
+    assert creator.assignment_complete(incomplete_assignment) is False
+
+
 # helper function
 
 
