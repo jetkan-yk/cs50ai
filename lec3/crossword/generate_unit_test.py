@@ -138,7 +138,19 @@ def test_order_domain_values(i, j):
 
     assert domain == otherDomain
     assert word in creator.order_domain_values(otherVar, dict())
-    assert word not in creator.order_domain_values(otherVar, dict(var=word))
+    assert word not in creator.order_domain_values(otherVar, {var: word})
+
+
+@pytest.mark.parametrize("i", range(3))
+@pytest.mark.parametrize("j", range(3))
+def test_select_unassigned_variable(i, j):
+    crossword = generate_crossword(i, j)
+    creator = CrosswordCreator(crossword)
+
+    var = random.choice(list(crossword.variables))
+    word = random.choice(list(creator.domains[var]))
+
+    assert var != creator.select_unassigned_variable({var: word})
 
 
 # helper function
