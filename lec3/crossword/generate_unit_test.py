@@ -123,10 +123,22 @@ def test_consistent(i, j):
     assert creator.consistent(consistent_assignment) is True
 
 
-# @pytest.mark.parametrize("i", range(3))
-# @pytest.mark.parametrize("j", range(3))
-# def test_order_domain_values(i, j):
-#     pass
+@pytest.mark.parametrize("i", range(3))
+@pytest.mark.parametrize("j", range(3))
+def test_order_domain_values(i, j):
+    crossword = generate_crossword(i, j)
+    creator = CrosswordCreator(crossword)
+
+    var = random.choice(list(crossword.variables))
+    word = random.choice(list(creator.domains[var]))
+    domain = creator.domains[var]
+
+    otherVar = random.choice(list(crossword.variables - {var}))
+    otherDomain = creator.domains[otherVar]
+
+    assert domain == otherDomain
+    assert word in creator.order_domain_values(otherVar, dict())
+    assert word not in creator.order_domain_values(otherVar, dict(var=word))
 
 
 # helper function
