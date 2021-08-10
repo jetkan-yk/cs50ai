@@ -106,15 +106,15 @@ class CrosswordCreator:
         for var, values in self.domains.items():
             self.domains[var] = {value for value in values if len(value) == var.length}
 
-    def conflict(self, x, y, valueX, valueY):
+    def conflict(self, x, y, wordX, wordY):
         """
-        Return True if x = valueX and y = valueY has conflict
+        Return True if x = wordX and y = wordY has conflict
         """
         overlap = self.crossword.overlaps[x, y]
         if overlap is None:
             return False
         (i, j) = overlap
-        return valueX[i] != valueY[j]
+        return wordX[i] != wordY[j]
 
     def revise(self, x, y):
         """
