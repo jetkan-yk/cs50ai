@@ -8,11 +8,15 @@ Feel free to replace the unit test functions with your version.
 'Why do we fall sir? So that we can learn to pick ourselves up.'
                                         - Batman Begins (2005)
 """
-import pytest
+import collections
 import random
+
+import pytest
 
 from crossword import Crossword
 from generate import CrosswordCreator
+
+invalid_crossword = [(1, 0), (2, 0)]  # These 2 combinations will not work
 
 
 @pytest.mark.parametrize("i", range(3))
@@ -58,10 +62,10 @@ def test_ac3(i, j):
     creator = CrosswordCreator(crossword)
 
     creator.enforce_node_consistency()
-    if (i, j) not in [(1, 0), (2, 0)]:
-        assert creator.ac3()
-    else:
+    if (i, j) in invalid_crossword:
         assert not creator.ac3()
+    else:
+        assert creator.ac3()
 
 
 def test_assignment_complete():
@@ -80,6 +84,43 @@ def test_assignment_complete():
     incomplete_assignment = complete_assignment.copy()
     incomplete_assignment[random_var] = None
     assert creator.assignment_complete(incomplete_assignment) is False
+
+
+@pytest.mark.parametrize("i", range(3))
+@pytest.mark.parametrize("j", range(3))
+def test_consistent(i, j):
+    if (i, j) in invalid_crossword:
+        return
+    crossword = generate_crossword(i, j)
+    creator = CrosswordCreator(crossword)
+
+    empty_assignment = dict()
+    assert creator.consistent(empty_assignment) is True
+
+    nostring_assignment = {var: "" for var in creator.domains}
+    assert creator.consistent(nostring_assignment) is False
+
+    # Ensure correct length
+    creator.enforce_node_consistency()
+    consistent_assignment = {
+        var: random.choice(list(values)) for var, values in creator.domains.items()
+    }
+    counter = collections.Counter(consistent_assignment.values())
+    to_remove = set()
+    # Ensure distinct
+    for var, word in consistent_assignment.items():
+        if counter[word] > 1:
+            to_remove.add(var)
+            assert creator.consistent(consistent_assignment) is False
+    # Ensure no conflict
+    for x, vX in consistent_assignment.items():
+        for y, vY in consistent_assignment.items():
+            if y in crossword.neighbors(x) and creator.conflict(x, y, vX, vY):
+                to_remove.add(x)
+                assert creator.consistent(consistent_assignment) is False
+    for var in to_remove:
+        consistent_assignment.pop(var)
+    assert creator.consistent(consistent_assignment) is True
 
 
 # helper function
