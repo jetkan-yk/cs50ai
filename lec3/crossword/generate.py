@@ -103,9 +103,7 @@ class CrosswordCreator:
         constraints; in this case, the length of the word.)
         """
         for var, values in self.domains.items():
-            self.domains[var] = set(
-                filter(lambda value: len(value) == var.length, values)
-            )
+            self.domains[var] = {value for value in values if len(value) == var.length}
 
     def conflict(self, x, y, valueX, valueY):
         """
