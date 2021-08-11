@@ -145,8 +145,8 @@ class CrosswordCreator:
         return False if one or more domains end up empty.
         """
         if arcs is None:
-            overlaps = self.crossword.overlaps.items()
-            arcs = [k for k, v in overlaps if v is not None]
+            overlaps = self.crossword.overlaps
+            arcs = [arc for arc, overlap in overlaps.items() if overlap is not None]
 
         queue = collections.deque(arcs)
 
@@ -179,9 +179,9 @@ class CrosswordCreator:
             if var.length != len(word):
                 return False
         # There are no conflicts between neighboring variables
-        for x, vX in assignment.items():
-            for y, vY in assignment.items():
-                if y in self.crossword.neighbors(x) and self.conflict(x, y, vX, vY):
+        for x, wX in assignment.items():
+            for y, wY in assignment.items():
+                if y in self.crossword.neighbors(x) and self.conflict(x, y, wX, wY):
                     return False
         return True
 
@@ -200,13 +200,16 @@ class CrosswordCreator:
             """
             return len(
                 [
-                    neighbor
+                    1
                     for neighbor in self.crossword.neighbors(var)
                     if neighbor not in assignment and value in self.domains[neighbor]
                 ]
             )
 
-        return sorted(self.domains[var], key=lambda value: constraining(value))
+        return sorted(
+            self.domains[var] - set(assignment.values()),
+            key=lambda value: constraining(value),
+        )
 
     def select_unassigned_variable(self, assignment):
         """
@@ -237,10 +240,17 @@ class CrosswordCreator:
         )
 
     def inference(self, x, assignment):
+        """
+        Draw inference from assignment of variable x.
+        Returns False if assignment to variable x cannot maintain arc consistency.
+        Returns None if no inference can be made.
+        Returns a dictionary of assignments if inferences are made.
+        """
+
         def maintain_arc_consistency(x):
             """
-            Draw inference from assignment of variable x. Returns True if arc
-            consistency is enforced and no domain is empty, False otherwise.
+            Returns True if arc consistency is enforced and no domain is empty,
+            False otherwise.
             """
             arcs = []
             for y in self.crossword.neighbors(x):
@@ -249,13 +259,13 @@ class CrosswordCreator:
             return self.ac3(arcs)
 
         if maintain_arc_consistency(x):
-            inference = dict()
             for var, values in self.domains.items():
                 if len(values) == 1:
-                    inference[var] = list(values)[0]
-            if inference:
-                return inference
-        return None
+                    value = list(values)[0]
+                    if value not in assignment.values():
+                        assignment[var], self.domains[var] = value, {value}
+            return True
+        return False
 
     def backtrack(self, assignment):
         """
@@ -272,8 +282,8 @@ class CrosswordCreator:
         var = self.select_unassigned_variable(assignment)
 
         for value in self.order_domain_values(var, assignment):
-            # Create a copy of assignment and domains for remove operation
-            backup = (assignment.copy(), copy.deepcopy(self.domains))
+            # Create a copy of assignment and domains for restore operation
+            restore = assignment.copy(), copy.deepcopy(self.domains)
 
             # If value consistent with assignment
             if self.consistent(assignment | {var: value}):
@@ -281,17 +291,16 @@ class CrosswordCreator:
                 assignment[var], self.domains[var] = value, {value}
 
                 inferences = self.inference(var, assignment)
-                # If inference != failure
-                if inferences is not None:
-                    # Add inferences to assignment
-                    assignment |= inferences
+                # Assigning {var=value} cannot maintain arc consistency
+                if not inferences:
+                    return None
 
                 result = self.backtrack(assignment)
                 if result is not None:
                     return result
 
-            # Remove assignment and inferences
-            (assignment, self.domains) = backup
+            # Restore changes to assignment and domains
+            assignment, self.domains = restore
         return None
 
 
