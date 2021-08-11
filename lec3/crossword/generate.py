@@ -263,7 +263,7 @@ class CrosswordCreator:
                 if len(values) == 1:
                     value = list(values)[0]
                     if value not in assignment.values():
-                        assignment[var], self.domains[var] = value, {value}
+                        assignment[var] = value
             return True
         return False
 
