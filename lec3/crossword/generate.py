@@ -235,15 +235,26 @@ class CrosswordCreator:
             key=lambda var: (num_remaining_value(var), -degree(var)),
         )
 
-    def maintain_arc_consistency(self, x):
-        """
-        Draw inference from assignment of variable x. Returns True if arc
-        consistency is enforced and no domain is empty, False otherwise.
-        """
-        arcs = []
-        for y in self.crossword.neighbors(x):
-            arcs.append((y, x))
-        return self.ac3(arcs)
+    def inference(self, x, assignment):
+        def maintain_arc_consistency(x):
+            """
+            Draw inference from assignment of variable x. Returns True if arc
+            consistency is enforced and no domain is empty, False otherwise.
+            """
+            arcs = []
+            for y in self.crossword.neighbors(x):
+                if y not in assignment:
+                    arcs.append((y, x))
+            return self.ac3(arcs)
+
+        if maintain_arc_consistency(x):
+            inference = dict()
+            for var, values in self.domains.items():
+                if len(values) == 1:
+                    inference[var] = list(values)[0]
+            if inference:
+                return inference
+        return None
 
     def backtrack(self, assignment):
         """
@@ -261,15 +272,14 @@ class CrosswordCreator:
 
         for value in self.order_domain_values(var, assignment):
             backtrackAssignment = assignment.copy()
-            assignment[var] = value
-            # If assignment and inferences are consistent
-            if self.consistent(assignment) and self.maintain_arc_consistency(var):
-                # Explore further
+            if self.consistent(assignment | {var: value}):
+                assignment[var] = value
+                inferences = self.inference(var, assignment)
+                if inferences is not None:
+                    assignment |= inferences
                 result = self.backtrack(assignment)
-                # Valid result found
                 if result is not None:
                     return result
-            # No result, backtrack assignment and inferences
             assignment = backtrackAssignment
         return None
 
