@@ -230,10 +230,10 @@ class CrosswordCreator:
         degree. If there is a tie, any of the tied variables are acceptable
         return values.
         """
-        return sorted(
+        return min(
             [var for var in self.crossword.variables if var not in assignment],
             key=lambda var: (self.minimum_remaining_value(var), self.degree(var)),
-        )[0]
+        )
 
     def maintain_arc_consistency(self, x):
         """
