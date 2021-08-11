@@ -163,9 +163,7 @@ class CrosswordCreator:
         Return True if `assignment` is complete (i.e., assigns a value to each
         crossword variable); return False otherwise.
         """
-        return len(assignment) == len(self.domains) and all(
-            word is not None for word in assignment.values()
-        )
+        return len(assignment) == len(self.domains)
 
     def consistent(self, assignment):
         """
@@ -191,10 +189,12 @@ class CrosswordCreator:
         Return the number of unassigned neighbors that are contesting the same value.
         Lower result yields better chance of getting selected by LCV.
         """
-        return sum(
-            1
-            for neighbor in self.crossword.neighbors(var)
-            if neighbor not in assignment and value in self.domains[neighbor]
+        return len(
+            [
+                neighbor
+                for neighbor in self.crossword.neighbors(var)
+                if neighbor not in assignment and value in self.domains[neighbor]
+            ]
         )
 
     def order_domain_values(self, var, assignment):
@@ -205,7 +205,7 @@ class CrosswordCreator:
         that rules out the fewest values among the neighbors of `var`.
         """
         return sorted(
-            [value for value in self.domains[var] if value not in assignment.values()],
+            self.domains[var],
             key=lambda value: self.least_constraining_value(var, value, assignment),
         )
 

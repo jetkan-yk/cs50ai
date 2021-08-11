@@ -80,11 +80,6 @@ def test_assignment_complete():
     }
     assert creator.assignment_complete(complete_assignment) is True
 
-    random_var = random.choice(list(complete_assignment.keys()))
-    incomplete_assignment = complete_assignment.copy()
-    incomplete_assignment[random_var] = None
-    assert creator.assignment_complete(incomplete_assignment) is False
-
 
 @pytest.mark.parametrize("i", range(3))
 @pytest.mark.parametrize("j", range(3))
