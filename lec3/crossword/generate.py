@@ -241,10 +241,8 @@ class CrosswordCreator:
 
     def inference(self, x, assignment):
         """
-        Draw inference from assignment of variable x.
-        Returns False if assignment to variable x cannot maintain arc consistency.
-        Returns None if no inference can be made.
-        Returns a dictionary of assignments if inferences are made.
+        Draw inference from assignment of variable x. Returns False if assignment
+        to variable x cannot maintain arc consistency, otherwise True.
         """
 
         def maintain_arc_consistency(x):
