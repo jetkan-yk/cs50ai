@@ -218,9 +218,9 @@ class CrosswordCreator:
 
     def degree(self, var):
         """
-        Return -1 * the number of neighbors of a variable.
+        Return the number of neighbors of a variable.
         """
-        return -1 * len(self.crossword.neighbors(var))
+        return len(self.crossword.neighbors(var))
 
     def select_unassigned_variable(self, assignment):
         """
@@ -232,7 +232,7 @@ class CrosswordCreator:
         """
         return min(
             [var for var in self.crossword.variables if var not in assignment],
-            key=lambda var: (self.minimum_remaining_value(var), self.degree(var)),
+            key=lambda var: (self.minimum_remaining_value(var), -self.degree(var)),
         )
 
     def maintain_arc_consistency(self, x):
