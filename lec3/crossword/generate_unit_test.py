@@ -13,10 +13,8 @@ import random
 
 import pytest
 
-from crossword import Crossword
 from generate import CrosswordCreator
-
-invalid_crossword = [(1, 0), (2, 0)]  # These 2 combinations will not work
+from generate_test import generate_crossword, invalid_crossword
 
 
 @pytest.mark.parametrize("i", range(3))
@@ -155,13 +153,6 @@ def assert_conflict(overlap, valueX, valueY):
     assert overlap is not None
     (i, j) = overlap
     assert valueX[i] != valueY[j]
-
-
-def generate_crossword(i, j):
-    structure = f"data/structure{i}.txt"
-    words = f"data/words{j}.txt"
-    print(f"\nTesting structure{i} words{j}")
-    return Crossword(structure, words)
 
 
 def generate_random_crossword():
