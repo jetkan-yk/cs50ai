@@ -11,10 +11,13 @@ import pytest
 from generate import CrosswordCreator
 from generate_unit_test import generate_crossword, invalid_crossword
 
+# Pro tip: run `pytest --durations=10` to see the 10 slowest executions
 
+
+@pytest.mark.parametrize("execution", range(10))
 @pytest.mark.parametrize("i", range(3))
 @pytest.mark.parametrize("j", range(3))
-def test(i, j):
+def test(execution, i, j):
     crossword = generate_crossword(i, j)
     creator = CrosswordCreator(crossword)
     assignment = creator.solve()

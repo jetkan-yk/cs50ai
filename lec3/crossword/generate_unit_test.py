@@ -123,10 +123,6 @@ def test_consistent(i, j):
     assert creator.consistent(consistent_assignment) is True
 
 
-def test_constraining_score():
-    assert True
-
-
 @pytest.mark.parametrize("i", range(3))
 @pytest.mark.parametrize("j", range(3))
 def test_order_domain_values(i, j):
@@ -155,11 +151,6 @@ def test_select_unassigned_variable(i, j):
     word = random.choice(list(creator.domains[var]))
 
     assert var != creator.select_unassigned_variable({var: word})
-
-
-def test_maintain_arc_consistency():
-    # TODO
-    assert True
 
 
 # helper function
