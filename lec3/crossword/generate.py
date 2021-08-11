@@ -1,4 +1,5 @@
 import collections
+import copy
 import sys
 
 from crossword import *
@@ -271,16 +272,26 @@ class CrosswordCreator:
         var = self.select_unassigned_variable(assignment)
 
         for value in self.order_domain_values(var, assignment):
-            backtrackAssignment = assignment.copy()
+            # Create a copy of assignment and domains for remove operation
+            backup = (assignment.copy(), copy.deepcopy(self.domains))
+
+            # If value consistent with assignment
             if self.consistent(assignment | {var: value}):
-                assignment[var] = value
+                # Add {var=value} to assignment and update domain
+                assignment[var], self.domains[var] = value, {value}
+
                 inferences = self.inference(var, assignment)
+                # If inference != failure
                 if inferences is not None:
+                    # Add inferences to assignment
                     assignment |= inferences
+
                 result = self.backtrack(assignment)
                 if result is not None:
                     return result
-            assignment = backtrackAssignment
+
+            # Remove assignment and inferences
+            (assignment, self.domains) = backup
         return None
 
 
