@@ -184,19 +184,6 @@ class CrosswordCreator:
                     return False
         return True
 
-    def least_constraining_value(self, var, value, assignment):
-        """
-        Return the number of unassigned neighbors that are contesting the same value.
-        Lower result yields better chance of getting selected by LCV.
-        """
-        return len(
-            [
-                neighbor
-                for neighbor in self.crossword.neighbors(var)
-                if neighbor not in assignment and value in self.domains[neighbor]
-            ]
-        )
-
     def order_domain_values(self, var, assignment):
         """
         Return a list of values in the domain of `var`, in order by
@@ -204,23 +191,21 @@ class CrosswordCreator:
         The first value in the list, for example, should be the one
         that rules out the fewest values among the neighbors of `var`.
         """
-        return sorted(
-            self.domains[var],
-            key=lambda value: self.least_constraining_value(var, value, assignment),
-        )
 
-    def minimum_remaining_value(self, var):
-        """
-        Return the number of remaining value of a variable. Lower result yields
-        better chance of getting selected by MRV.
-        """
-        return len(self.domains[var])
+        def constraining(value):
+            """
+            Return the number of unassigned neighbors that are contesting the same value.
+            Lower result yields better chance of getting selected by LCV Heuristic.
+            """
+            return len(
+                [
+                    neighbor
+                    for neighbor in self.crossword.neighbors(var)
+                    if neighbor not in assignment and value in self.domains[neighbor]
+                ]
+            )
 
-    def degree(self, var):
-        """
-        Return the number of neighbors of a variable.
-        """
-        return len(self.crossword.neighbors(var))
+        return sorted(self.domains[var], key=lambda value: constraining(value))
 
     def select_unassigned_variable(self, assignment):
         """
@@ -230,9 +215,24 @@ class CrosswordCreator:
         degree. If there is a tie, any of the tied variables are acceptable
         return values.
         """
+
+        def num_remaining_value(var):
+            """
+            Return the number of remaining value of a variable. Lower result yields
+            better chance of getting selected by MRV Heuristic.
+            """
+            return len(self.domains[var])
+
+        def degree(var):
+            """
+            Return the number of neighbors of a variable. Higher result yields
+            better chance of getting selected by Degree Heuristic.
+            """
+            return len(self.crossword.neighbors(var))
+
         return min(
             [var for var in self.crossword.variables if var not in assignment],
-            key=lambda var: (self.minimum_remaining_value(var), -self.degree(var)),
+            key=lambda var: (num_remaining_value(var), -degree(var)),
         )
 
     def maintain_arc_consistency(self, x):
