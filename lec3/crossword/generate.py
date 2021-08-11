@@ -186,6 +186,17 @@ class CrosswordCreator:
                     return False
         return True
 
+    def constraining_score(self, var, value, assignment):
+        """
+        Return the number of unassigned neighbors that are contesting the same value.
+        Lower score yields better chance of getting selected by LCV.
+        """
+        return sum(
+            1
+            for neighbor in self.crossword.neighbors(var)
+            if neighbor not in assignment and value in self.domains[neighbor]
+        )
+
     def order_domain_values(self, var, assignment):
         """
         Return a list of values in the domain of `var`, in order by
@@ -193,8 +204,10 @@ class CrosswordCreator:
         The first value in the list, for example, should be the one
         that rules out the fewest values among the neighbors of `var`.
         """
-        values = self.domains[var]
-        return [value for value in values if value not in assignment.values()]
+        return sorted(
+            [value for value in self.domains[var] if value not in assignment.values()],
+            key=lambda value: self.constraining_score(var, value, assignment),
+        )
 
     def select_unassigned_variable(self, assignment):
         """
