@@ -1,6 +1,6 @@
 name: CI test
 
-on: [push, pull_request, workflow_dispatch]
+on: workflow_dispatch
 
 jobs:
   Pytest:
@@ -17,8 +17,10 @@ jobs:
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
         
-      - name: Install pytest
-        run: python -m pip install --upgrade pip pytest
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Run test batch script
         run: .\test.bat
