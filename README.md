@@ -1,6 +1,6 @@
 # CS50's Introduction to Artificial Intelligence with Python
 
-[![CI test](https://github.com/jetkan-yk/cs50ai/actions/workflows/main.yml/badge.svg)](https://github.com/jetkan-yk/cs50ai/actions/workflows/main.yml)
+[![CI test](https://github.com/jetkan-yk/cs50ai/actions/workflows/main.yml/badge.svg?event=push)](https://github.com/jetkan-yk/cs50ai/actions/workflows/main.yml)
 
 ## ‼️ WARNING ‼️
 
