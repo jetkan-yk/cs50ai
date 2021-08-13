@@ -1,9 +1,9 @@
-name: CI test
+name: test
 
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
-  test:
+  all:
     runs-on: windows-latest
 
     steps:
