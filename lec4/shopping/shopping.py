@@ -4,6 +4,8 @@ import sys
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 
+from shopping_unit_test import evidence0
+
 TEST_SIZE = 0.4
 
 
@@ -29,6 +31,11 @@ def main():
     print(f"Incorrect: {(y_test != predictions).sum()}")
     print(f"True Positive Rate: {100 * sensitivity:.2f}%")
     print(f"True Negative Rate: {100 * specificity:.2f}%")
+
+
+def parse(row):
+    # TODO
+    return evidence0
 
 
 def load_data(filename):
@@ -59,7 +66,20 @@ def load_data(filename):
     labels should be the corresponding list of labels, where each label
     is 1 if Revenue is true, and 0 otherwise.
     """
-    raise NotImplementedError
+    with open(filename) as f:
+        reader = csv.reader(f)
+        next(reader)
+
+        data = []
+        for row in reader:
+            data.append(
+                {"evidence": parse(row), "label": 1 if row[-1] == "True" else 0}
+            )
+
+    evidence = [row["evidence"] for row in data]
+    labels = [row["label"] for row in data]
+
+    return evidence, labels
 
 
 def train_model(evidence, labels):
