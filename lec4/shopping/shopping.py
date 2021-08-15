@@ -78,32 +78,10 @@ def load_data(filename):
     labels should be the corresponding list of labels, where each label
     is 1 if Revenue is true, and 0 otherwise.
     """
-    df = pd.read_csv(
-        filename,
-        dtype={
-            "Administrative": np.int64,
-            "Administrative_Duration": np.float64,
-            "Informational": np.int64,
-            "Informational_Duration": np.float64,
-            "ProductRelated": np.int64,
-            "ProductRelated_Duration": np.float64,
-            "BounceRates": np.float64,
-            "ExitRates": np.float64,
-            "PageValues": np.float64,
-            "SpecialDay": np.float64,
-            "Month": np.string_,
-            "OperatingSystems": np.int64,
-            "Browser": np.int64,
-            "Region": np.int64,
-            "TrafficType": np.int64,
-            "VisitorType": np.string_,
-            "Weekend": np.int8,
-            "Revenue": np.int8,
-        },
-    )
+    df = pd.read_csv(filename, dtype={"Weekend": np.int64, "Revenue": np.int64})
 
-    df["Month"] = df["Month"].map(kMonth).astype(np.int8)
-    df["VisitorType"] = df["VisitorType"].map(kVisitorType).fillna(0).astype(np.int8)
+    df["Month"] = df["Month"].map(kMonth)
+    df["VisitorType"] = df["VisitorType"].map(kVisitorType).fillna(0).astype(np.int64)
 
     evidence = df.loc[:, :"Weekend"]
     labels = df["Revenue"]
