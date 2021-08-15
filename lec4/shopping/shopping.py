@@ -2,12 +2,13 @@ import sys
 
 import numpy as np
 import pandas as pd
+from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 
 TEST_SIZE = 0.4
 
-monthInt = {
+kMonth = {
     "Jan": 0,
     "Feb": 1,
     "Mar": 2,
@@ -21,6 +22,8 @@ monthInt = {
     "Nov": 10,
     "Dec": 11,
 }
+
+kVisitorType = {"Returning_Visitor": 1}
 
 
 def main():
@@ -99,12 +102,13 @@ def load_data(filename):
         },
     )
 
-    df["Month"] = df["Month"].map(monthInt).astype(np.int8)
-    df["VisitorType"] = (
-        df["VisitorType"].map({"Returning_Visitor": 1}).fillna(0).astype(np.int8)
-    )
+    df["Month"] = df["Month"].map(kMonth).astype(np.int8)
+    df["VisitorType"] = df["VisitorType"].map(kVisitorType).fillna(0).astype(np.int8)
 
-    return df.loc[:, :"Weekend"], df.loc[:, "Revenue":]
+    evidence = df.loc[:, :"Weekend"]
+    labels = df["Revenue"]
+
+    return evidence, labels
 
 
 def train_model(evidence, labels):
@@ -112,7 +116,10 @@ def train_model(evidence, labels):
     Given a list of evidence lists and a list of labels, return a
     fitted k-nearest neighbor model (k=1) trained on the data.
     """
-    raise NotImplementedError
+    model = KNeighborsClassifier(n_neighbors=1)
+    model.fit(evidence, labels)
+
+    return model
 
 
 def evaluate(labels, predictions):
@@ -130,7 +137,12 @@ def evaluate(labels, predictions):
     representing the "true negative rate": the proportion of
     actual negative labels that were accurately identified.
     """
-    raise NotImplementedError
+    tn, fp, fn, tp = confusion_matrix(labels, predictions).ravel()
+
+    sensitivity = tp / (tp + fp)
+    specificity = tn / (tn + fn)
+
+    return sensitivity, specificity
 
 
 if __name__ == "__main__":
