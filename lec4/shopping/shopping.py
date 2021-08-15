@@ -83,8 +83,8 @@ def load_data(filename):
     df["Month"] = df["Month"].map(kMonth)
     df["VisitorType"] = df["VisitorType"].map(kVisitorType).fillna(0).astype(np.int64)
 
-    evidence = df.loc[:, :"Weekend"]
-    labels = df["Revenue"]
+    evidence = df.loc[:, :"Weekend"].to_numpy()
+    labels = df["Revenue"].to_numpy()
 
     return evidence, labels
 
