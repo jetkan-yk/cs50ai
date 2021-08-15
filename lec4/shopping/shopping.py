@@ -1,11 +1,26 @@
-import csv
 import sys
 
+import numpy as np
+import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 
-
 TEST_SIZE = 0.4
+
+monthInt = {
+    "Jan": 0,
+    "Feb": 1,
+    "Mar": 2,
+    "Apr": 3,
+    "May": 4,
+    "June": 5,
+    "Jul": 6,
+    "Aug": 7,
+    "Sep": 8,
+    "Oct": 9,
+    "Nov": 10,
+    "Dec": 11,
+}
 
 
 def main():
@@ -30,11 +45,6 @@ def main():
     print(f"Incorrect: {(y_test != predictions).sum()}")
     print(f"True Positive Rate: {100 * sensitivity:.2f}%")
     print(f"True Negative Rate: {100 * specificity:.2f}%")
-
-
-def parse(row):
-    # TODO
-    return [0, 0.0, 0, 0.0, 1, 0.0, 0.2, 0.2, 0.0, 0.0, 1, 1, 1, 1, 1, 1, 0]
 
 
 def load_data(filename):
@@ -65,20 +75,37 @@ def load_data(filename):
     labels should be the corresponding list of labels, where each label
     is 1 if Revenue is true, and 0 otherwise.
     """
-    with open(filename) as f:
-        reader = csv.reader(f)
-        next(reader)
+    # df = pd.read_csv(filename, dtype={"Weekend": np.int64, "Revenue": np.int64})
+    df = pd.read_csv(
+        filename,
+        dtype={
+            "Administrative": np.int64,
+            "Administrative_Duration": np.float64,
+            "Informational": np.int64,
+            "Informational_Duration": np.float64,
+            "ProductRelated": np.int64,
+            "ProductRelated_Duration": np.float64,
+            "BounceRates": np.float64,
+            "ExitRates": np.float64,
+            "PageValues": np.float64,
+            "SpecialDay": np.float64,
+            "Month": np.string_,
+            "OperatingSystems": np.int64,
+            "Browser": np.int64,
+            "Region": np.int64,
+            "TrafficType": np.int64,
+            "VisitorType": np.string_,
+            "Weekend": np.int8,
+            "Revenue": np.int8,
+        },
+    )
 
-        data = []
-        for row in reader:
-            data.append(
-                {"evidence": parse(row), "label": 1 if row[-1] == "True" else 0}
-            )
+    df["Month"] = df["Month"].map(monthInt).astype(np.int8)
+    df["VisitorType"] = (
+        df["VisitorType"].map({"Returning_Visitor": 1}).fillna(0).astype(np.int8)
+    )
 
-    evidence = [row["evidence"] for row in data]
-    labels = [row["label"] for row in data]
-
-    return evidence, labels
+    return df.loc[:, :"Weekend"], df["Revenue"]
 
 
 def train_model(evidence, labels):
