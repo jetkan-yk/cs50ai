@@ -2,3 +2,4 @@ pytest
 pillow
 numpy
 sklearn
+pandas
