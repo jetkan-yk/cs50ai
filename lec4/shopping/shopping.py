@@ -75,7 +75,6 @@ def load_data(filename):
     labels should be the corresponding list of labels, where each label
     is 1 if Revenue is true, and 0 otherwise.
     """
-    # df = pd.read_csv(filename, dtype={"Weekend": np.int64, "Revenue": np.int64})
     df = pd.read_csv(
         filename,
         dtype={
@@ -105,7 +104,7 @@ def load_data(filename):
         df["VisitorType"].map({"Returning_Visitor": 1}).fillna(0).astype(np.int8)
     )
 
-    return df.loc[:, :"Weekend"], df["Revenue"]
+    return df.loc[:, :"Weekend"], df.loc[:, "Revenue":]
 
 
 def train_model(evidence, labels):
