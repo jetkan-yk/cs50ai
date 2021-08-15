@@ -16,5 +16,5 @@ expected0 = [0, 0.0, 0, 0.0, 1, 0.0, 0.2, 0.2, 0.0, 0.0, 1, 1, 1, 1, 1, 1, 0]
 def test_load_data():
     evidence, labels = load_data("./shopping.csv")
     assert len(evidence) == len(labels)
-    assert evidence.iloc[0].values.tolist() == expected0
-    assert labels.iloc[0].values == 0
+    assert (evidence.iloc[0] == expected0).all()
+    assert labels.iloc[0] == 0
