@@ -15,10 +15,10 @@ import pytest
 from nim import NimAI
 
 
-@pytest.mark.parametrize("execution", range(10))
-def test_get_q_value(execution):
+def test_get_q_value():
     ai = NimAI()
     state, action = generate_random_state_action()
+    # test default value
     assert ai.get_q_value(state, action) == 0
 
 
@@ -26,8 +26,7 @@ def test_get_q_value(execution):
 def test_update_q_value(execution):
     ai = NimAI()
     state, action = generate_random_state_action()
-    reward = rd.randint(1, 10)
-    future_rewards = rd.randint(1, 10)
+    reward, future_rewards = generate_random_reward_future_rewards()
 
     old_q = ai.get_q_value(state, action)
     assert old_q == 0
@@ -39,8 +38,34 @@ def test_update_q_value(execution):
 
     ai.update_q_value(state, action, new_q, reward, future_rewards)
 
-    new_new_q = ai.get_q_value(state, action)
-    assert new_new_q == new_q + ai.alpha * ((reward + future_rewards) - new_q)
+    new_q2 = ai.get_q_value(state, action)
+    assert new_q2 == new_q + ai.alpha * ((reward + future_rewards) - new_q)
+
+
+@pytest.mark.parametrize("execution", range(10))
+def test_best_future_reward(execution):
+    ai = NimAI()
+    state, action = generate_random_state_action()
+    while True:
+        _, action2 = generate_random_state_action()
+        if action != action2:
+            break
+    reward, future_rewards = generate_random_reward_future_rewards()
+    reward2, future_rewards2 = generate_random_reward_future_rewards()
+
+    # No q-value, return 0
+    assert ai.best_future_reward(state) == 0
+
+    # 1 q-value, return result
+    old_q = ai.get_q_value(state, action)
+    ai.update_q_value(state, action, old_q, reward, future_rewards)
+    new_q = ai.get_q_value(state, action)
+    assert ai.best_future_reward(state) == new_q
+
+    # 2 q-values, return max result
+    ai.update_q_value(state, action2, old_q, reward2, future_rewards2)
+    new_q2 = ai.get_q_value(state, action2)
+    assert ai.best_future_reward(state) == max(new_q, new_q2)
 
 
 # helper function
@@ -60,3 +85,7 @@ def generate_random_state_action():
     action = (pile, rd.randint(1, random_initial[pile]))
 
     return state, action
+
+
+def generate_random_reward_future_rewards():
+    return rd.randint(1, 10), rd.randint(1, 10)
