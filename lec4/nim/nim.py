@@ -116,9 +116,8 @@ class NimAI:
         `alpha` is the learning rate, and `new value estimate`
         is the sum of the current reward and estimated future rewards.
         """
-        key = (tuple(state), action)
-
-        self.q[key] = old_q + self.alpha * ((reward + future_rewards) - old_q)
+        new_q = old_q + self.alpha * ((reward + future_rewards) - old_q)
+        self.q[tuple(state), action] = new_q
 
     def best_future_reward(self, state):
         """
@@ -130,7 +129,8 @@ class NimAI:
         Q-value in `self.q`. If there are no available actions in
         `state`, return 0.
         """
-        return max((v for (s, _), v in self.q.items() if s == tuple(state)), default=0)
+        actions = Nim.available_actions(state)
+        return max(map(lambda a: self.get_q_value(state, a), actions), default=0)
 
     def choose_action(self, state, epsilon=True):
         """
@@ -147,16 +147,13 @@ class NimAI:
         If multiple actions have the same Q-value, any of those
         options is an acceptable return value.
         """
-        available_a = Nim.available_actions(state)
-        best_v = self.best_future_reward(state)
+        actions = Nim.available_actions(state)
+        best_q = self.best_future_reward(state)
+        best_actions = [a for a in actions if self.get_q_value(state, a) == best_q]
 
-        if (epsilon and random.random() < self.epsilon) or best_v == 0:
-            # Choose a random available action
-            return random.choice(list(available_a))
-        # Choose a random best action
-        return random.choice(
-            [a for (_, a), v in self.q.items() if a in available_a and v == best_v]
-        )
+        if epsilon and random.random() < self.epsilon:
+            return random.choice(list(actions))
+        return random.choice(best_actions)
 
 
 def train(n):

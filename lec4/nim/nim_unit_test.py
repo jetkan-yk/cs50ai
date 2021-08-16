@@ -43,7 +43,7 @@ def test_update_q_value(execution):
 
 
 @pytest.mark.parametrize("execution", range(10))
-def test_best_future_reward(execution):
+def deprecated_test_best_future_reward(execution):
     ai = NimAI()
     state, action = generate_random_state_action()
     while True:
