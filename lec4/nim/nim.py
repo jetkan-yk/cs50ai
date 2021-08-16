@@ -130,7 +130,7 @@ class NimAI:
         Q-value in `self.q`. If there are no available actions in
         `state`, return 0.
         """
-        return max([v for k, v in self.q.items() if k[0] == tuple(state)], default=0)
+        return max((v for (s, _), v in self.q.items() if s == tuple(state)), default=0)
 
     def choose_action(self, state, epsilon=True):
         """
@@ -147,16 +147,16 @@ class NimAI:
         If multiple actions have the same Q-value, any of those
         options is an acceptable return value.
         """
+        available_a = Nim.available_actions(state)
         best_v = self.best_future_reward(state)
 
         if (epsilon and random.random() < self.epsilon) or best_v == 0:
             # Choose a random available action
-            actions = [k[1] for k in self.q.keys()]
-        else:
-            # Choose a random best action
-            actions = [k[1] for k, v in self.q.items() if v == best_v]
-
-        return random.choice(actions)
+            return random.choice(list(available_a))
+        # Choose a random best action
+        return random.choice(
+            [a for (_, a), v in self.q.items() if a in available_a and v == best_v]
+        )
 
 
 def train(n):
