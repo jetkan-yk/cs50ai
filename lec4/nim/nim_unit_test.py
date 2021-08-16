@@ -22,6 +22,27 @@ def test_get_q_value(execution):
     assert ai.get_q_value(state, action) == 0
 
 
+@pytest.mark.parametrize("execution", range(10))
+def test_update_q_value(execution):
+    ai = NimAI()
+    state, action = generate_random_state_action()
+    reward = rd.randint(1, 10)
+    future_rewards = rd.randint(1, 10)
+
+    old_q = ai.get_q_value(state, action)
+    assert old_q == 0
+
+    ai.update_q_value(state, action, old_q, reward, future_rewards)
+
+    new_q = ai.get_q_value(state, action)
+    assert new_q == ai.alpha * ((reward + future_rewards) - old_q)
+
+    ai.update_q_value(state, action, new_q, reward, future_rewards)
+
+    new_new_q = ai.get_q_value(state, action)
+    assert new_new_q == new_q + ai.alpha * ((reward + future_rewards) - new_q)
+
+
 # helper function
 
 
