@@ -68,7 +68,45 @@ def test_best_future_reward(execution):
     assert ai.best_future_reward(state) == max(new_q, new_q2)
 
 
+@pytest.mark.parametrize("execution", range(10))
+def test_choose_action(execution):
+    # test epsilon=False, 100%
+    ai, state, expected = choose_action_helper(1)
+    # skip cases where result can be 50:50
+    if len(set(v for k, v in ai.q.items() if k[0] == tuple(state))) > 1:
+        assert ai.choose_action(state, epsilon=False) == expected
+
+    # test epsilon=True, 0%
+    ai, state, expected = choose_action_helper(0)
+    # skip cases where result can be 50:50
+    if len(set(v for k, v in ai.q.items() if k[0] == tuple(state))) > 1:
+        assert ai.choose_action(state) == expected
+
+
 # helper function
+
+
+def choose_action_helper(eps):
+    ai = NimAI(epsilon=eps)
+    state, action = generate_random_state_action()
+    while True:
+        _, action2 = generate_random_state_action()
+        if action != action2:
+            break
+    reward, future_rewards = generate_random_reward_future_rewards()
+    reward2, future_rewards2 = generate_random_reward_future_rewards()
+
+    old_q = ai.get_q_value(state, action)
+
+    ai.update_q_value(state, action, old_q, reward, future_rewards)
+    new_q = ai.get_q_value(state, action)
+
+    ai.update_q_value(state, action2, old_q, reward2, future_rewards2)
+    new_q2 = ai.get_q_value(state, action2)
+
+    expected = action if new_q > new_q2 else action2
+
+    return ai, state, expected
 
 
 def generate_random_initial():
