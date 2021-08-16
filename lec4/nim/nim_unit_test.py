@@ -69,7 +69,7 @@ def test_best_future_reward(execution):
 
 
 @pytest.mark.parametrize("execution", range(10))
-def test_choose_action(execution):
+def deprecated_test_choose_action(execution):
     # test epsilon=False, 100%
     ai, state, expected = choose_action_helper(1)
     # skip cases where result can be 50:50
