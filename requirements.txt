@@ -3,3 +3,6 @@ pillow
 numpy
 sklearn
 pandas
+opencv-python
+scikit-learn
+tensorflow
