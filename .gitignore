@@ -2,3 +2,4 @@ __pycache__/
 .pytest_cache/
 .vscode/
 lec3/crossword/data/output*.png
+lec5/traffic/gtsrb
