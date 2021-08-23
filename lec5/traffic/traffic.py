@@ -1,9 +1,9 @@
-import cv2
-import numpy as np
 import os
 import sys
-import tensorflow as tf
 
+import cv2
+import numpy as np
+import tensorflow as tf
 from sklearn.model_selection import train_test_split
 
 EPOCHS = 10
@@ -35,7 +35,7 @@ def main():
     model.fit(x_train, y_train, epochs=EPOCHS)
 
     # Evaluate neural network performance
-    model.evaluate(x_test,  y_test, verbose=2)
+    model.evaluate(x_test, y_test, verbose=2)
 
     # Save model to file
     if len(sys.argv) == 3:
@@ -58,7 +58,21 @@ def load_data(data_dir):
     be a list of integer labels, representing the categories for each of the
     corresponding `images`.
     """
-    raise NotImplementedError
+    data = []
+
+    for dirpath, _, filenames in os.walk(data_dir):
+        for filename in filenames:
+            image = cv2.imread(os.path.join(dirpath, filename))
+            resized = cv2.resize(image, (IMG_WIDTH, IMG_HEIGHT))
+
+            label = int(os.path.basename(dirpath))
+
+            data.append({"image": resized, "label": label})
+
+    images = [row["image"] for row in data]
+    labels = [row["label"] for row in data]
+
+    return images, labels
 
 
 def get_model():
