@@ -5,6 +5,6 @@ for /d /r %%d in (*) do (
     cd %%d
     if exist *_test.py (
         pytest 
-        if !errorlevel! neq 0 exit 1
+        if !errorlevel! eq 1 exit 1
     )
 )
