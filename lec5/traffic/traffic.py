@@ -4,6 +4,7 @@ import sys
 import cv2
 import numpy as np
 import tensorflow as tf
+from keras.layers import *
 from sklearn.model_selection import train_test_split
 
 EPOCHS = 10
@@ -81,7 +82,32 @@ def get_model():
     `input_shape` of the first layer is `(IMG_WIDTH, IMG_HEIGHT, 3)`.
     The output layer should have `NUM_CATEGORIES` units, one for each category.
     """
-    raise NotImplementedError
+    # Create  a convolutional neural network
+    layers = [
+        # Convolutional layer 0
+        Conv2D(32, (7, 7), activation="relu", input_shape=(IMG_WIDTH, IMG_HEIGHT, 3)),
+        # Max-pooling layer 0
+        MaxPooling2D(pool_size=(2, 2)),
+        # Convolutional layer 1
+        Conv2D(32, (4, 4), activation="relu"),
+        # Max-pooling layer 1
+        MaxPooling2D(pool_size=(2, 2)),
+        # Flatten units
+        Flatten(),
+        # Add a hidden layer with dropout
+        Dense(128, activation="relu"),
+        Dropout(0.5),
+        # Add an output layer with output units for all labels
+        Dense(NUM_CATEGORIES, activation="softmax"),
+    ]
+
+    model = tf.keras.models.Sequential(layers)
+    model.compile(
+        optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"]
+    )
+    model.summary()
+
+    return model
 
 
 if __name__ == "__main__":
