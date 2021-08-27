@@ -30,7 +30,7 @@
 		],
 		"description": "Insert unit tests file header"
 	},
-	"Regression tests file header": {
+	"Acceptance tests file header": {
 		"scope": "python",
 		"prefix": "regtest",
 		"body": [
