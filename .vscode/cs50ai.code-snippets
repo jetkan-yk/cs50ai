@@ -32,15 +32,15 @@
 	},
 	"Acceptance tests file header": {
 		"scope": "python",
-		"prefix": "regtest",
+		"prefix": "actest",
 		"body": [
 			"\"\"\"",
-			"Regression tests for ${1:filename}.py\n",
+			"Acceptance tests for ${1:filename}.py\n",
 			"Make sure that this file is in the same directory as ${1:filename}.py!\n",
 			"'Why do we fall sir? So that we can learn to pick ourselves up.'",
 			"                                        - Batman Begins (2005)",
 			"\"\"\"",
 		],
-		"description": "Insert regression tests file header"
+		"description": "Insert acceptance tests file header"
 	}
 }
