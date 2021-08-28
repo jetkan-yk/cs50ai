@@ -8,20 +8,10 @@ Feel free to replace the unit test functions with your version.
 'Why do we fall sir? So that we can learn to pick ourselves up.'
                                         - Batman Begins (2005)
 """
-import re
+import pytest
+import os
 
-import nltk
-
-
-def preprocess(sentence):
-    """
-    Convert `sentence` to a list of its words.
-    Pre-process sentence by converting all characters to lowercase
-    and removing any word that does not contain at least one alphabetic
-    character.
-    """
-    tokens = nltk.word_tokenize(sentence.lower())
-    return list(filter(lambda t: re.search("[a-z]", t), tokens))
+from my_parser import parser, preprocess
 
 
 def test_preprocess():
@@ -32,3 +22,19 @@ def test_preprocess():
 
     print(result)
     assert result == expected
+
+
+@pytest.mark.parametrize("execution", range(1, 11))
+def test_parser(execution):
+    with open(os.path.join("sentences", f"{execution}.txt")) as f:
+        s = f.read()
+    s = preprocess(s)
+    try:
+        trees = list(parser.parse(s))
+        print()
+        for tree in trees:
+            tree.pretty_print()
+    except ValueError as e:
+        assert False, e
+    if not trees:
+        assert False, "Could not parse sentence."
