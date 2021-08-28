@@ -64,12 +64,8 @@ def preprocess(sentence):
     and removing any word that does not contain at least one alphabetic
     character.
     """
-    return list(
-        filter(
-            lambda token: re.search("[a-z]", token),
-            nltk.word_tokenize(sentence.lower()),
-        )
-    )
+    tokens = nltk.word_tokenize(sentence.lower())
+    return list(filter(lambda token: re.search("[a-z]", token), tokens))
 
 
 def np_chunk(tree):
