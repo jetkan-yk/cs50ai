@@ -8,10 +8,11 @@ Feel free to replace the unit test functions with your version.
 'Why do we fall sir? So that we can learn to pick ourselves up.'
                                         - Batman Begins (2005)
 """
-import pytest
 import os
 
-from my_parser import parser, preprocess
+import pytest
+
+from my_parser import np_chunk, parser, preprocess
 
 
 def test_preprocess():
@@ -34,6 +35,23 @@ def test_parser(execution):
         print()
         for tree in trees:
             tree.pretty_print()
+    except ValueError as e:
+        assert False, e
+    if not trees:
+        assert False, "Could not parse sentence."
+
+
+@pytest.mark.parametrize("execution", range(1, 11))
+def test_np_chunk(execution):
+    with open(os.path.join("sentences", f"{execution}.txt")) as f:
+        s = f.read()
+    s = preprocess(s)
+    try:
+        trees = list(parser.parse(s))
+        print()
+        for tree in trees:
+            for np in np_chunk(tree):
+                print(" ".join(np.flatten()))
     except ValueError as e:
         assert False, e
     if not trees:
