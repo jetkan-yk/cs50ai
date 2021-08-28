@@ -65,7 +65,7 @@ def preprocess(sentence):
     character.
     """
     tokens = nltk.word_tokenize(sentence.lower())
-    return list(filter(lambda token: re.search("[a-z]", token), tokens))
+    return list(filter(lambda t: re.search("[a-z]", t), tokens))
 
 
 def np_chunk(tree):
