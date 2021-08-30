@@ -1,7 +1,8 @@
+import math
 import os
-import sys
-import re
 import string
+import sys
+from collections import Counter
 
 import nltk
 
@@ -86,7 +87,14 @@ def compute_idfs(documents):
     Any word that appears in at least one of the documents should be in the
     resulting dictionary.
     """
-    raise NotImplementedError
+    num_doc = Counter()
+    for words in documents.values():
+        num_doc.update(set(words))
+
+    idfs = dict()
+    for word, num_doc_has_word in num_doc.items():
+        idfs[word] = math.log(len(documents) / num_doc_has_word)
+    return idfs
 
 
 def top_files(query, files, idfs, n):

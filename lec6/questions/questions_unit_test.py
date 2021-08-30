@@ -10,10 +10,13 @@ Feel free to replace the unit test functions with your version.
 """
 import os
 
-from questions import load_files, tokenize, no_punctuation
+from questions import compute_idfs, load_files, no_punctuation, tokenize
 
 DIRECTORY = "corpus"
 FILE = "test.txt"
+FILE2 = "test2.txt"
+TOKENS = "fall sir learn pick sir batman begins 2005".split()
+TOKENS2 = "sir learn".split()
 
 
 def test_load_files():
@@ -42,9 +45,20 @@ def test_tokenize():
 
     tokens = tokenize(document)
 
-    expected = "fall sir learn pick sir batman begins 2005".split()
+    assert tokens == TOKENS
 
-    assert tokens == expected
+
+def test_compute_idfs():
+    create_test_file()
+    create_test_file2
+
+    idfs = compute_idfs({FILE: TOKENS, FILE2: TOKENS2})
+    expected = idfs[TOKENS[0]]
+    for k, v in idfs.items():
+        if k in ["sir", "learn"]:
+            assert v == 0
+        else:
+            assert v == expected
 
 
 # helper function
@@ -56,5 +70,14 @@ def create_test_file():
             """
             'Why do we fall sir? So that we can learn to pick ourselves up.'
                                                 - Sir Batman Begins (2005)
+            """
+        )
+
+
+def create_test_file2():
+    with open(os.path.join(DIRECTORY, FILE2), "w") as f:
+        f.write(
+            """
+            Sir sir sIR siR LEARN learn learn LEARN LeARn
             """
         )
