@@ -59,14 +59,6 @@ def load_files(directory):
     return data
 
 
-def no_punctuation(token):
-    return all(map(lambda c: c not in string.punctuation, token))
-
-
-def no_stopwords(token):
-    return token not in nltk.corpus.stopwords.words("english")
-
-
 def tokenize(document):
     """
     Given a document (represented as a string), return a list of all of the
@@ -76,7 +68,10 @@ def tokenize(document):
     punctuation or English stopwords.
     """
     tokens = nltk.word_tokenize(document.lower())
-    return list(filter(lambda t: no_punctuation(t) and no_stopwords(t), tokens))
+    punctuations = set(string.punctuation)
+    stopwords = set(nltk.corpus.stopwords.words("english"))
+
+    return list(filter(lambda t: t not in punctuations and t not in stopwords, tokens))
 
 
 def compute_idfs(documents):
