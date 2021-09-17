@@ -10,7 +10,7 @@ import os
 
 import pytest
 
-from my_parser import np_chunk, parser, preprocess
+from parser import np_chunk, parser, preprocess
 
 
 @pytest.mark.parametrize("execution", range(1, 11))
