@@ -111,7 +111,7 @@ def top_files(query, files, idfs, n):
             score += tf * idfs[word]
         return score
 
-    return sorted(files.keys(), key=lambda file: get_score(file))[:n]
+    return sorted(files.keys(), key=lambda file: get_score(file), reverse=True)[:n]
 
 
 def top_sentences(query, sentences, idfs, n):
@@ -122,7 +122,20 @@ def top_sentences(query, sentences, idfs, n):
     the query, ranked according to idf. If there are ties, preference should
     be given to sentences that have a higher query term density.
     """
-    raise NotImplementedError
+
+    def get_score(sentence):
+        """
+        Computes the score of a sentence by calculating the sum of idfs
+        for each word in query and query term density
+        """
+        document = sentences[sentence]
+
+        idf_sum = sum(idfs[word] for word in set(query) if word in set(document))
+        term_density = sum(word in query for word in document) / len(document)
+
+        return idf_sum, term_density
+
+    return sorted(sentences.keys(), key=lambda st: get_score(st), reverse=True)[:n]
 
 
 if __name__ == "__main__":
