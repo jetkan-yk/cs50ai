@@ -99,7 +99,19 @@ def top_files(query, files, idfs, n):
     to their IDF values), return a list of the filenames of the the `n` top
     files that match the query, ranked according to tf-idf.
     """
-    raise NotImplementedError
+
+    def get_score(file):
+        """
+        Computes the score of a file by calculating the sum of tf-idf for
+        each word in query
+        """
+        score = 0
+        for word in query:
+            tf = sum(w == word for w in files[file])
+            score += tf * idfs[word]
+        return score
+
+    return sorted(files.keys(), key=lambda file: get_score(file))[:n]
 
 
 def top_sentences(query, sentences, idfs, n):
