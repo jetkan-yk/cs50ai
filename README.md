@@ -21,9 +21,9 @@ Each project contains a `test.py` and a `unit_test.py` file which I've written w
 | [3](https://cs50.harvard.edu/ai/2020/weeks/3/) | [Optimization](https://youtu.be/qK46ET1xk2A)    | [Constraint Satisfaction](https://cs50.harvard.edu/ai/2020/notes/3/#constraint-satisfaction)                 | [Crossword](lec3/crossword/generate.py)        | [Write an AI to generate crossword puzzles.](https://cs50.harvard.edu/ai/2020/projects/3/crossword/)                                              | [generate_test.py](/lec3/crossword/generate_test.py)        |
 | [4](https://cs50.harvard.edu/ai/2020/weeks/4/) | [Learning](https://youtu.be/-g0iJjnO2_w)        | [Nearest-Neighbor Classification](https://cs50.harvard.edu/ai/2020/notes/4/#nearest-neighbor-classification) | [Shopping](lec4/shopping/shopping.py)          | [Write an AI to predict whether online shopping customers will complete a purchase.](https://cs50.harvard.edu/ai/2020/projects/4/shopping/)       | [shopping_test.py](lec4/shopping/shopping_test.py)          |
 | [4](https://cs50.harvard.edu/ai/2020/weeks/4/) | [Learning](https://youtu.be/-g0iJjnO2_w)        | [Reinforcement Learning](https://cs50.harvard.edu/ai/2020/notes/4/#reinforcement-learning)                   | [Nim](lec4/nim/nim.py)                         | [Write an AI that teaches itself to play Nim through reinforcement learning.](https://cs50.harvard.edu/ai/2020/projects/4/nim/)                   | [nim_test.py](lec4/nim/nim_test.py)                         |
-| [5](https://cs50.harvard.edu/ai/2020/weeks/5/) | [Neural Networks](https://youtu.be/J1QD9hLDEDY) | [Convolutional Neural Networks](https://cs50.harvard.edu/ai/2020/notes/5/#convolutional-neural-networks)     | [Traffic](lec5/traffic/traffic.py)             | [Write an AI to identify which traffic sign appears in a photograph.](https://cs50.harvard.edu/ai/2020/projects/5/traffic/)                       | *Work in Progress*                                          |
+| [5](https://cs50.harvard.edu/ai/2020/weeks/5/) | [Neural Networks](https://youtu.be/J1QD9hLDEDY) | [Convolutional Neural Networks](https://cs50.harvard.edu/ai/2020/notes/5/#convolutional-neural-networks)     | [Traffic](lec5/traffic/traffic.py)             | [Write an AI to identify which traffic sign appears in a photograph.](https://cs50.harvard.edu/ai/2020/projects/5/traffic/)                       | *Not Available*                                             |
 | [6](https://cs50.harvard.edu/ai/2020/weeks/6/) | [Language](https://youtu.be/55tRetTTrdQ)        | [Context Free Grammar](https://cs50.harvard.edu/ai/2020/notes/6/#context-free-grammar)                       | [Parser](lec6/parser/parser.py)                | [Write an AI to parse sentences and extract noun phrases.](https://cs50.harvard.edu/ai/2020/projects/6/parser/)                                   | [parser_ts.py](lec6/parser/parser_ts.py)                    |
-| [6](https://cs50.harvard.edu/ai/2020/weeks/6/) | [Language](https://youtu.be/55tRetTTrdQ)        | [td-idf](https://cs50.harvard.edu/ai/2020/notes/6/#tf-idf)                                                   | [Questions](lec6/questions/questions.py)       | [Write an AI to answer questions.](https://cs50.harvard.edu/ai/2020/projects/6/questions/)                                                        | *Work in Progress*                                          |
+| [6](https://cs50.harvard.edu/ai/2020/weeks/6/) | [Language](https://youtu.be/55tRetTTrdQ)        | [td-idf](https://cs50.harvard.edu/ai/2020/notes/6/#tf-idf)                                                   | [Questions](lec6/questions/questions.py)       | [Write an AI to answer questions.](https://cs50.harvard.edu/ai/2020/projects/6/questions/)                                                        | *Not Available*                                             |
 
 ## 🛠️ How to Run Tests
 
@@ -48,14 +48,6 @@ Each project contains a `test.py` and a `unit_test.py` file which I've written w
 - Run `pytest --durations=n` to see the `n` slowest execution time
 - Install `pytest-repeat` with `pip` and then run `pytest --count n` to repeat the test for *n* times
 
-## 🤹 Improvement
-
-I am currently auditing this course (no certificate bearing, just interested in AI and Brian's teaching style), more solutions and test cases will be added in the near future!</br>
-
-This is a self-initiated project. Passing these test cases **does not** guarantee that you will also receive a full grade from the HavardX teaching team.</br>
-
-If you notice any error in the test cases, or even better, would like to contribute to this repository, please create a new issue [here](https://github.com/jetkan-yk/cs50ai/issues). I would greatly appreciate any constructive feedback regarding my code too! ♥️
-
 ## 💻 My Setup
 
 Each test case should take less than 30 seconds, depending on Python's I/O and your code efficiency.
@@ -65,9 +57,3 @@ Each test case should take less than 30 seconds, depending on Python's I/O and y
 - Python 3.9.5 64-bit
 - Visual Studio Code w/Pylance (latest release)
 - Code formatter: black
-
-## 🏛️ License
-
-Retrieved from <https://cs50.harvard.edu/ai/2020/license/>
-
-![license](https://user-images.githubusercontent.com/36299141/128539744-ee267826-82fb-4fd2-831b-9d40413be9dc.png)
