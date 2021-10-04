@@ -24,10 +24,6 @@ def main():
     # Get image arrays and labels for all image files
     images, labels = load_data(sys.argv[1])
 
-    global NUM_CATEGORIES
-    if sys.argv[1].endswith("small\\"):
-        NUM_CATEGORIES = 3
-
     # Split data into training and testing sets
     labels = tf.keras.utils.to_categorical(labels)
     x_train, x_test, y_train, y_test = train_test_split(
@@ -90,20 +86,21 @@ def get_model():
     # Create  a convolutional neural network
     model = Sequential(
         [
-            # Convolutional layer. Learn 32 filters using a 3x3 kernel
+            # Convolutional layer 1
             Conv2D(
-                64, (3, 3), activation="relu", input_shape=(IMG_WIDTH, IMG_HEIGHT, 3)
+                200, (7, 7), activation="relu", input_shape=(IMG_WIDTH, IMG_HEIGHT, 3)
             ),
-            # Max-pooling layer, using 2x2 pool size
+            # Max-pooling layer 1
             MaxPooling2D(pool_size=(2, 2)),
-            # # Convolutional layer 1
-            # Conv2D(32, (4, 4), activation="relu"),
-            # # Max-pooling layer 1
-            # MaxPooling2D(pool_size=(2, 2)),
+            # Convolutional layer 2
+            Conv2D(250, (4, 4), activation="relu"),
+            # Max-pooling layer 2
+            MaxPooling2D(pool_size=(2, 2)),
             # Flatten units
             Flatten(),
             # Add a hidden layer with dropout
-            Dense(128, activation="relu"),
+            Dense(400, activation="relu"),
+            # Add a 50% dropout
             Dropout(0.5),
             # Add an output layer with output units for all labels
             Dense(NUM_CATEGORIES, activation="softmax"),
