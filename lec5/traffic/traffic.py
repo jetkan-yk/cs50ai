@@ -23,6 +23,10 @@ def main():
     # Get image arrays and labels for all image files
     images, labels = load_data(sys.argv[1])
 
+    global NUM_CATEGORIES
+    if sys.argv[1].endswith("small\\"):
+        NUM_CATEGORIES = 3
+
     # Split data into training and testing sets
     labels = tf.keras.utils.to_categorical(labels)
     x_train, x_test, y_train, y_test = train_test_split(
