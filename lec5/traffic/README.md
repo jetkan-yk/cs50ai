@@ -1,5 +1,7 @@
 # Traffic
 
+YouTube link: <https://youtu.be/9lazagweViE>
+
 This is a summary of all different parameters that have been applied to my model.
 
 In most cases, the model has the following structure:
