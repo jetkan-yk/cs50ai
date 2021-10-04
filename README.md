@@ -2,7 +2,7 @@
 
 ## ‼️ WARNING ‼️
 
-This repository contains solutions to the CS50 AI projects. If you intend to take this course in the future, please read the [Academic Honesty policy](https://cs50.harvard.edu/ai/2020/honesty/) before viewing the solutions. This course has a [**zero-tolerance plagiarism policy**](https://discord.com/channels/393846237255696385/690359206716637184/829384296900853781).
+This repository contains solutions to the CS50 AI projects. If you intend to take this course in the future, please read the [Academic Honesty policy](https://cs50.harvard.edu/ai/2020/honesty/) before viewing the solutions. This course has a **zero-tolerance plagiarism policy**.
 
 ## 🩺 Test Cases [![test](https://github.com/jetkan-yk/cs50ai/actions/workflows/main.yml/badge.svg?event=push)](https://github.com/jetkan-yk/cs50ai/actions/workflows/main.yml)
 
