@@ -107,6 +107,8 @@ def get_model():
         ]
     )
 
+    model.summary()
+
     model.compile(
         optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"]
     )
